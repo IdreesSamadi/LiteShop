@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import logging from './config/logging';
 import config from './config/config';
+import productRouter from './routes/product'
 
 const NAMESPACE = 'Server';
 const app = express()
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/api', productRouter)
 
 app.listen(config.server.port, ()=> {
   console.log('worinkngg')
