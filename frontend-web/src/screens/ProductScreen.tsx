@@ -2,7 +2,6 @@ import React from 'react'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-import Product from '../Models/product'
 import Rating from '../components/Rating'
 import products from '../products'
 
