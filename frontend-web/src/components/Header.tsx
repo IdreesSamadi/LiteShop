@@ -12,11 +12,11 @@ const Header: React.FC = () => {
           <Navbar.Collapse>
             <Nav className="ml-auto">
               <Nav.Link href="/cart">
-                <CartFill className="mr-1" />
+                <CartFill className="h5 mr-1" />
                 Cart
               </Nav.Link>
               <Nav.Link href="/login">
-                <PersonFill className="mr-1" />
+                <PersonFill className="h5 mr-1" />
                 Sign In
               </Nav.Link>
             </Nav>
