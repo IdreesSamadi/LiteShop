@@ -16,17 +16,15 @@ const app = express()
 app.use((req, res, next) => {
   logger.info(
     NAMESPACE,
-    `METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
+    `[REQUEST] METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
   )
 
   res.on('finish', () => {
-    /** Log the res */
     logger.info(
       NAMESPACE,
-      `METHOD: [${req.method}] - URL: [${req.url}] - STATUS: [${res.statusCode}] - IP: [${req.socket.remoteAddress}]`
+      `[RESPONSE] METHOD: [${req.method}] - URL: [${req.url}] - STATUS: [${res.statusCode}] - IP: [${req.socket.remoteAddress}]`
     )
   })
-
   next()
 })
 

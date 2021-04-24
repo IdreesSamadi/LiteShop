@@ -13,7 +13,7 @@ const ProductScreen: React.FC<Props> = ({ match }) => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const { data } = await axios.get(`/api/product/${match.params.id}`)
+      const { data } = await axios.get(`/api/products/${match.params.id}`)
       setProduct(data)
     }
     fetchProduct()
@@ -22,15 +22,15 @@ const ProductScreen: React.FC<Props> = ({ match }) => {
   return (
     <>
       {product ? (
-        <div>
+        <>
           <Link className="btn btn-light my-3" to="/">
             Go Back
           </Link>
           <Row>
-            <Col md={6}>
+            <Col lg={6}>
               <Image src={product.image} alt={product.name} fluid />
             </Col>
-            <Col md={3}>
+            <Col lg={3}>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>{product.name}</h3>
@@ -47,7 +47,7 @@ const ProductScreen: React.FC<Props> = ({ match }) => {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col md={3}>
+            <Col lg={3}>
               <Card>
                 <ListGroup variant="flush">
                   <ListGroup.Item>
@@ -75,7 +75,7 @@ const ProductScreen: React.FC<Props> = ({ match }) => {
               </Card>
             </Col>
           </Row>
-        </div>
+        </>
       ) : null}
     </>
   )
