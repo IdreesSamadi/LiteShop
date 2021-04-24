@@ -5,7 +5,10 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
-  ProductActionTypes
+  ProductActionTypes,
+  PRODUCT_DETAILS_FAIL,
+  PRODUCT_DETAILS_REQUEST,
+  PRODUCT_DETAILS_SUCCESS
 } from './productActionTypes'
 
 export const listProducts = () => async (
@@ -22,6 +25,27 @@ export const listProducts = () => async (
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    })
+  }
+}
+export const listProductDetails = (id: string) => async (
+  dispatch: Dispatch<ProductActionTypes>
+) => {
+  try {
+    dispatch({ type: PRODUCT_DETAILS_REQUEST })
+    const { data } = await axios.get(`/api/products/${id}`)
+
+    dispatch({
+      type: PRODUCT_DETAILS_SUCCESS,
+      payload: data
+    })
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_DETAILS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
