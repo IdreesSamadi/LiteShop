@@ -3,6 +3,8 @@ import { Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 
 import IProduct from '../Models/product'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
 import Product from '../components/Product'
 import { listProducts } from '../store/actions/product'
 import { AppState } from '../store/store'
@@ -21,9 +23,9 @@ const HomeScreen: React.FC = () => {
     <>
       <h1>Latest Products</h1>
       {loading ? (
-        <h2>loading</h2>
+        <Loader />
       ) : error ? (
-        <h2>{error}</h2>
+        <Message title="Error" message={error} variant="danger" />
       ) : (
         <Row>
           {(products as IProduct[]).map((product) => {
