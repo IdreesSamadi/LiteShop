@@ -1,10 +1,11 @@
 import bodyParser from 'body-parser'
-import express from 'express'
+import express, { ErrorRequestHandler } from 'express'
 
 import config from './config/config'
 import connectDB from './config/db'
 import logger from './config/logging'
-import productRouter from './routes/product'
+import { notFound, errorHandler } from './middleware/errorMiddleware'
+import productRouter from './routes/product.routes'
 
 const NAMESPACE = 'Server'
 
@@ -49,7 +50,10 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use('/api', productRouter)
+app.use('/api/products', productRouter)
+
+app.use(notFound)
+app.use(errorHandler)
 
 app.listen(config.server.port, () =>
   logger.info(
