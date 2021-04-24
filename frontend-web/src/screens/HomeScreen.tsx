@@ -12,7 +12,6 @@ const HomeScreen: React.FC = () => {
     const fetchProducts = async () => {
       const { data } = await axios.get('/api/products')
       setProducts(data)
-      console.log(data)
     }
     fetchProducts()
   }, [])
