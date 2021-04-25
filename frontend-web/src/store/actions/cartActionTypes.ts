@@ -10,6 +10,7 @@ export interface CartAddItemAction {
 
 export interface CartRemoveItemAction {
   type: typeof CART_REMOVE_ITEM
+  payload: string
 }
 
 export type CartActionTypes = CartRemoveItemAction | CartAddItemAction

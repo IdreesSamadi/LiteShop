@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useEffect } from 'react'
-import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Form, Button } from 'react-bootstrap'
 import { Trash } from 'react-bootstrap-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { RouteComponentProps, Link } from 'react-router-dom'
 
 import Message from '../components/Message'
-import { addToCart } from '../store/actions/cart'
+import { addToCart, removeFromCart } from '../store/actions/cart'
 import { ICart } from '../store/reducers/models/cartModel'
 import { AppState } from '../store/store'
 
@@ -24,7 +24,7 @@ const CartScreen: React.FC<Props> = ({ match, location, history }) => {
   }, [dispatch, productId, qty])
 
   const removeFromCartHandler = (id: string) => {
-    console.log(id)
+    dispatch(removeFromCart(id))
   }
 
   const checkoutHandler = () => {

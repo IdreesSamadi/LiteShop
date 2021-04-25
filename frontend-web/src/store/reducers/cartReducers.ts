@@ -1,5 +1,9 @@
 import { updateObject } from '../../shared/utility'
-import { CartActionTypes, CART_ADD_ITEM } from '../actions/cartActionTypes'
+import {
+  CartActionTypes,
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM
+} from '../actions/cartActionTypes'
 import { ICart } from './models/cartModel'
 
 interface ICartState {
@@ -28,6 +32,12 @@ export const cartReducer = (
           cartItems: [...state.cartItems, item]
         })
       }
+    case CART_REMOVE_ITEM:
+      return updateObject(state, {
+        cartItems: state.cartItems.filter(
+          (item) => item.product !== action.payload
+        )
+      })
     default:
       return state
   }
