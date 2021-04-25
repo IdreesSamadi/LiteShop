@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
-import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
+import React, { ChangeEvent, useEffect, useState } from 'react'
+import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
+import IProduct from '../Models/product'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Rating from '../components/Rating'
@@ -11,7 +12,8 @@ import { AppState } from '../store/store'
 
 interface Props extends RouteComponentProps<{ id: string }> {}
 
-const ProductScreen: React.FC<Props> = ({ match }) => {
+const ProductScreen: React.FC<Props> = ({ history, match }) => {
+  const [qty, setQty] = useState<number>(0)
   const dispatch = useDispatch()
   const { loading, error, product } = useSelector(
     (state: AppState) => state.productDetails
@@ -20,6 +22,20 @@ const ProductScreen: React.FC<Props> = ({ match }) => {
   useEffect(() => {
     dispatch(listProductDetails(match.params.id))
   }, [match, dispatch])
+
+  const addToCartHandler = () => {
+    history.push(`/cart/${match.params.id}?qty=${qty}`)
+  }
+
+  const options: JSX.Element[] = [
+    ...Array((product as IProduct).countInStock).keys()
+  ].map((q) => {
+    return (
+      <option key={+q + 1} value={+q + 1}>
+        {+q + 1}
+      </option>
+    )
+  })
 
   return (
     <>
@@ -32,10 +48,10 @@ const ProductScreen: React.FC<Props> = ({ match }) => {
         <Message message={error} title="Error" variant="danger" />
       ) : (
         <Row>
-          <Col lg={6}>
+          <Col md={5} lg={6}>
             <Image src={product.image} alt={product.name} fluid />
           </Col>
-          <Col lg={3}>
+          <Col md={4} lg={3}>
             <ListGroup variant="flush">
               <ListGroup.Item>
                 <h3>{product.name}</h3>
@@ -52,7 +68,7 @@ const ProductScreen: React.FC<Props> = ({ match }) => {
               </ListGroup.Item>
             </ListGroup>
           </Col>
-          <Col lg={3}>
+          <Col md={3}>
             <Card>
               <ListGroup variant="flush">
                 <ListGroup.Item>
@@ -71,8 +87,28 @@ const ProductScreen: React.FC<Props> = ({ match }) => {
                     </Col>
                   </Row>
                 </ListGroup.Item>
+                {product.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Qty</Col>
+                      <Col>
+                        <Form.Control
+                          as="select"
+                          value={qty}
+                          onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                            setQty(+e.target.value)
+                          }}>
+                          {options}
+                        </Form.Control>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                )}
                 <ListGroup.Item>
-                  <Button block disabled={product.countInStock === 0}>
+                  <Button
+                    onClick={addToCartHandler}
+                    block
+                    disabled={product.countInStock === 0}>
                     Add To Cart
                   </Button>
                 </ListGroup.Item>
