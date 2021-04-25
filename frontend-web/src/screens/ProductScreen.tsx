@@ -13,7 +13,7 @@ import { AppState } from '../store/store'
 interface Props extends RouteComponentProps<{ id: string }> {}
 
 const ProductScreen: React.FC<Props> = ({ history, match }) => {
-  const [qty, setQty] = useState<number>(0)
+  const [qty, setQty] = useState<number>(1)
   const dispatch = useDispatch()
   const { loading, error, product } = useSelector(
     (state: AppState) => state.productDetails

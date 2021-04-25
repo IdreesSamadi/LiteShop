@@ -4,7 +4,7 @@ import { Dispatch } from 'redux'
 import { AppState } from '../store'
 import { CartActionTypes, CART_ADD_ITEM } from './cartActionTypes'
 
-export const addToCart = (id: string, qty: string) => async (
+export const addToCart = (id: string, qty: number) => async (
   dispatch: Dispatch<CartActionTypes>,
   getState: () => AppState
 ) => {
@@ -17,7 +17,7 @@ export const addToCart = (id: string, qty: string) => async (
       image: data.image,
       price: data.price,
       countInStock: data.countInStock,
-      qty: +qty
+      qty: qty
     }
   })
   localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))

@@ -2,11 +2,17 @@ import { updateObject } from '../../shared/utility'
 import { CartActionTypes, CART_ADD_ITEM } from '../actions/cartActionTypes'
 import { ICart } from './models/cartModel'
 
-const initialState: { cartItems: ICart[] } = {
+interface ICartState {
+  cartItems: ICart[]
+}
+const initialState: ICartState = {
   cartItems: []
 }
 
-export const cartReducer = (state = initialState, action: CartActionTypes) => {
+export const cartReducer = (
+  state: ICartState = initialState,
+  action: CartActionTypes
+) => {
   switch (action.type) {
     case CART_ADD_ITEM:
       const item = action.payload
@@ -18,7 +24,9 @@ export const cartReducer = (state = initialState, action: CartActionTypes) => {
           )
         })
       } else {
-        return updateObject(state, { cartItems: [...state.cartItems, item] })
+        return updateObject(state, {
+          cartItems: [...state.cartItems, item]
+        })
       }
     default:
       return state
