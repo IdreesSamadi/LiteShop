@@ -1,8 +1,13 @@
-import mongoose, { Schema } from 'mongoose'
+import bcrypt from 'bcryptjs'
+import mongoose, { Schema, Model } from 'mongoose'
 
-import IBook from '../interfaces/user.interface'
+import IUser from '../interfaces/user.interface'
 
-const userSchema = new Schema(
+export interface IUserModel extends IUser, Document {
+  matchPassword(password: string): any
+}
+
+const userSchema = new Schema<IUserModel>(
   {
     name: {
       type: String,
@@ -28,4 +33,8 @@ const userSchema = new Schema(
   }
 )
 
-export default mongoose.model<IBook>('User', userSchema)
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password)
+}
+
+export default mongoose.model<IUserModel>('User', userSchema)

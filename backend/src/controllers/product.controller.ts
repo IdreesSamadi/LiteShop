@@ -23,7 +23,4 @@ const getProduct: RequestHandler<{ id: string }> = asyncHandler(
   }
 )
 
-export default {
-  getProduct,
-  getProducts
-}
+export { getProduct, getProducts }

@@ -6,6 +6,7 @@ import connectDB from './config/db'
 import logger from './config/logging'
 import { notFound, errorHandler } from './middleware/errorMiddleware'
 import productRouter from './routes/product.routes'
+import userRouter from './routes/user.routes'
 
 const NAMESPACE = 'Server'
 
@@ -49,6 +50,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/api/products', productRouter)
+app.use('/api/users', userRouter)
 
 app.use(notFound)
 app.use(errorHandler)
