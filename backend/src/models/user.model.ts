@@ -3,8 +3,8 @@ import mongoose, { Schema, Model } from 'mongoose'
 
 import IUser from '../interfaces/user.interface'
 
-export interface IUserModel extends IUser, Document {
-  matchPassword(password: string): any
+export interface IUserModel extends IUser {
+  matchPassword(password: string): Promise<boolean>
 }
 
 const userSchema = new Schema<IUserModel>(

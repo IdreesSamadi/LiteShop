@@ -9,13 +9,14 @@ const MONGO_URI = process.env.MONGO_URI || ''
 
 const SERVER = {
   hostname: SERVER_HOSTNAME,
-  port: SERVER_PORT,
+  port: SERVER_PORT
 }
 
 const config = {
   server: SERVER,
   environment: NODE_ENV,
-  mongoURI: MONGO_URI,
+  mongoURI: MONGO_URI
 }
 
+export const JWT_SECRET = process.env.JWT_SECRET || 'secretCode'
 export default config
