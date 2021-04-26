@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs'
-import mongoose, { Schema, Model } from 'mongoose'
+import mongoose, { Schema, Document } from 'mongoose'
 
 import IUser from '../interfaces/user.interface'
 
-export interface IUserModel extends IUser {
+export interface IUserModel extends IUser, Document {
   matchPassword(password: string): Promise<boolean>
 }
 
