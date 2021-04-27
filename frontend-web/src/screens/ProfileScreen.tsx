@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FormEvent } from 'react'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 
 import Loader from '../components/Loader'
 import Message from '../components/Message'
