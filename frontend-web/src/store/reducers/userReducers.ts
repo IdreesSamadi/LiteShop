@@ -18,6 +18,7 @@ import {
   UserLoginTypes,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
+  USER_DETAILS_RESET,
   USER_DETAILS_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -28,7 +29,7 @@ import {
   USER_REGISTER_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
-  USER_UPDATE_PROFILE_REST,
+  USER_UPDATE_PROFILE_RESET,
   USER_UPDATE_PROFILE_SUCCESS
 } from '../actions/userActionTypes'
 import { IUserLogin } from './models/UserLoginModel'
@@ -107,6 +108,8 @@ export const userDetailsReducer = (
         user: action.payload,
         loading: false
       })
+    case USER_DETAILS_RESET:
+      return updateObject(state, { user: {} })
     case USER_DETAILS_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
     default:
@@ -129,7 +132,7 @@ export const userUpdateProfileReducer = (
       })
     case USER_UPDATE_PROFILE_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
-    case USER_UPDATE_PROFILE_REST:
+    case USER_UPDATE_PROFILE_RESET:
       return updateObject(state, { loading: false, user: {} })
     default:
       return state
