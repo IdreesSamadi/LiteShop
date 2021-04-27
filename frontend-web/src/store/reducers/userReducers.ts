@@ -34,7 +34,7 @@ export const userLoginReducer = (
     case USER_LOGIN_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
     case USER_LOGOUT:
-      return updateObject(state, { loading: false })
+      return updateObject(state, { loading: false, userInfo: null })
     default:
       return state
   }

@@ -4,7 +4,8 @@ import { Dispatch } from 'redux'
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
-  USER_LOGIN_SUCCESS
+  USER_LOGIN_SUCCESS,
+  USER_LOGOUT
 } from './userActionTypes'
 
 export const login = (email: string, password: string) => async (
@@ -44,4 +45,11 @@ export const login = (email: string, password: string) => async (
           : error.message
     })
   }
+}
+
+export const logout = () => (dispatch: Dispatch) => {
+  localStorage.removeItem('userInfo')
+  dispatch({
+    type: USER_LOGOUT
+  })
 }
