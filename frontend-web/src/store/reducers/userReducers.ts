@@ -4,18 +4,21 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
-  USER_LOGOUT
+  USER_LOGOUT,
+  USER_REGISTER_FAIL,
+  USER_REGISTER_REQUEST,
+  USER_REGISTER_SUCCESS
 } from '../actions/userActionTypes'
 import { IUserLogin } from './models/UserLoginModel'
 
 interface IUserState {
   loading: boolean
-  userInfo: IUserLogin | {}
+  userInfo: IUserLogin | null
   error?: string
 }
 const initialState: IUserState = {
   loading: false,
-  userInfo: {}
+  userInfo: null
 }
 
 export const userLoginReducer = (
@@ -35,6 +38,26 @@ export const userLoginReducer = (
       return updateObject(state, { loading: false, error: action.payload })
     case USER_LOGOUT:
       return updateObject(state, { loading: false, userInfo: null })
+    default:
+      return state
+  }
+}
+
+export const userRegisterReducer = (
+  state: IUserState = initialState,
+  action: UserLoginTypes
+) => {
+  switch (action.type) {
+    case USER_REGISTER_REQUEST:
+      return updateObject(state, { loading: true })
+    case USER_REGISTER_SUCCESS:
+      return updateObject(state, {
+        userInfo: action.payload,
+        error: '',
+        loading: false
+      })
+    case USER_REGISTER_FAIL:
+      return updateObject(state, { loading: false, error: action.payload })
     default:
       return state
   }
