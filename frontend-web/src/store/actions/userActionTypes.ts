@@ -28,6 +28,10 @@ export const USER_DETAILS_REQUEST = 'USER_DETAILS_REQUEST'
 export const USER_DETAILS_SUCCESS = 'USER_DETAILS_SUCCESS'
 export const USER_DETAILS_FAIL = 'USER_DETAILS_FAIL'
 
+export const USER_UPDATE_PROFILE_REQUEST = 'USER_UPDATE_PROFILE_REQUEST'
+export const USER_UPDATE_PROFILE_SUCCESS = 'USER_UPDATE_PROFILE_SUCCESS'
+export const USER_UPDATE_PROFILE_FAIL = 'USER_UPDATE_PROFILE_FAIL'
+export const USER_UPDATE_PROFILE_REST = 'USER_UPDATE_PROFILE_REST'
 export interface userLoginRequestAction {
   type: typeof USER_LOGIN_REQUEST
 }
@@ -74,6 +78,23 @@ export interface userDetailsFailAction {
   payload: string
 }
 
+export interface userUpdateProfileRequestAction {
+  type: typeof USER_UPDATE_PROFILE_REQUEST
+}
+
+export interface userUpdateProfileSuccessAction {
+  type: typeof USER_UPDATE_PROFILE_SUCCESS
+  payload: IUserLogin
+}
+
+export interface userUpdateProfileFailAction {
+  type: typeof USER_UPDATE_PROFILE_FAIL
+  payload: string
+}
+
+export interface userUpdateProfileRestAction {
+  type: typeof USER_UPDATE_PROFILE_REST
+}
 export type UserLoginTypes =
   | userLogoutAction
   | userLoginFailAction
@@ -85,3 +106,7 @@ export type UserLoginTypes =
   | userDetailsFailAction
   | userDetailsSuccessAction
   | userDetailsRequestAction
+  | userUpdateProfileFailAction
+  | userUpdateProfileSuccessAction
+  | userUpdateProfileRequestAction
+  | userUpdateProfileRestAction
