@@ -8,6 +8,7 @@ import CartScreen from './screens/CartScreen'
 import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
 import ProductScreen from './screens/ProductScreen'
+import ProfileScreen from './screens/ProfileScreen'
 import RegisterScreen from './screens/RegisterScreen'
 
 const App: React.FC = () => {
@@ -16,6 +17,7 @@ const App: React.FC = () => {
       <Header />
       <main className="py-3">
         <Container>
+          <Route path="/profile" component={ProfileScreen} />
           <Route path="/register" component={RegisterScreen} />
           <Route path="/login" component={LoginScreen} />
           <Route path="/product/:id" component={ProductScreen} />
