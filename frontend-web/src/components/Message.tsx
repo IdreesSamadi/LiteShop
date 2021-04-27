@@ -4,7 +4,7 @@ import { Alert } from 'react-bootstrap'
 interface Props {
   variant: string
   message: string
-  title: string
+  title?: string
 }
 const Message: React.FC<Props> = ({ variant, title, message }) => {
   return (

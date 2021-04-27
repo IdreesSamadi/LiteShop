@@ -6,13 +6,16 @@ import {
   USER_LOGIN_SUCCESS,
   USER_LOGOUT
 } from '../actions/userActionTypes'
+import { IUserLogin } from './models/UserLoginModel'
 
 interface IUserState {
   loading: boolean
+  userInfo: IUserLogin | {}
   error?: string
 }
 const initialState: IUserState = {
-  loading: false
+  loading: false,
+  userInfo: {}
 }
 
 export const userLoginReducer = (
@@ -23,7 +26,11 @@ export const userLoginReducer = (
     case USER_LOGIN_REQUEST:
       return updateObject(state, { loading: true })
     case USER_LOGIN_SUCCESS:
-      return updateObject(state, { userInfo: action.payload })
+      return updateObject(state, {
+        userInfo: action.payload,
+        error: '',
+        loading: false
+      })
     case USER_LOGIN_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
     case USER_LOGOUT:
