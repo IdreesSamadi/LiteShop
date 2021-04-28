@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 import React, { useState, FormEvent } from 'react'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 

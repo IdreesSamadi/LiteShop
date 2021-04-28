@@ -4,3 +4,7 @@ export const updateObject = (oldObj: any, newObj: any) => {
     ...newObj
   }
 }
+
+export const addDecimals = (num: number): string => {
+  return (Math.round(num * 1000) / 1000).toFixed(2)
+}
