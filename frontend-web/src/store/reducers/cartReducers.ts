@@ -25,11 +25,16 @@ import { ICart } from './models/cartModel'
 
 interface ICartState {
   cartItems: ICart[]
-  shippingAddress: IAddress | {}
+  shippingAddress: IAddress
 }
 const initialState: ICartState = {
   cartItems: [],
-  shippingAddress: {}
+  shippingAddress: {
+    address: '',
+    city: '',
+    postalCode: '',
+    country: ''
+  }
 }
 
 export const cartReducer = (

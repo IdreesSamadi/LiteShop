@@ -14,11 +14,12 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-import React, { useState, FormEvent, useEffect } from 'react'
+import React, { useState, FormEvent } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 
+import CheckoutSteps from '../components/CheckoutSteps'
 import FromContainer from '../components/FromContainer'
 import { saveShippingAddress } from '../store/actions/cart'
 import { IAddress } from '../store/reducers/models/addressModel'
@@ -31,19 +32,20 @@ const ShippingScreen: React.FC<Props> = ({ history }) => {
     (state: AppState) => state.cart
   )
 
-  useEffect(() => {
-    setAddress(shippingAddress.address)
-    setCity(shippingAddress.city)
-    setCountry(shippingAddress.country)
-    setPostCode(shippingAddress.postalCode)
-  }, [shippingAddress])
-
   const dispatch = useDispatch()
 
-  const [address, setAddress] = useState<string>('')
-  const [city, setCity] = useState<string>('')
-  const [country, setCountry] = useState<string>('')
-  const [postalCode, setPostCode] = useState<string>('')
+  const [address, setAddress] = useState<string>(
+    shippingAddress.address ? shippingAddress.address : ''
+  )
+  const [city, setCity] = useState<string>(
+    shippingAddress.city ? shippingAddress.city : ''
+  )
+  const [country, setCountry] = useState<string>(
+    shippingAddress.country ? shippingAddress.country : ''
+  )
+  const [postalCode, setPostCode] = useState<string>(
+    shippingAddress.postalCode ? shippingAddress.postalCode : ''
+  )
 
   const submitHandler = (e: FormEvent) => {
     e.preventDefault()
@@ -52,6 +54,7 @@ const ShippingScreen: React.FC<Props> = ({ history }) => {
   }
   return (
     <FromContainer>
+      <CheckoutSteps step1 step2 />
       <h1>Shipping</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="address">
