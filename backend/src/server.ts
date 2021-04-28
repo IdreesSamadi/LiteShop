@@ -5,6 +5,7 @@ import config from './config/config'
 import connectDB from './config/db'
 import logger from './config/logging'
 import { notFound, errorHandler } from './middleware/errorMiddleware'
+import orderRouter from './routes/order.routes'
 import productRouter from './routes/product.routes'
 import userRouter from './routes/user.routes'
 
@@ -51,6 +52,7 @@ app.use((req, res, next) => {
 
 app.use('/api/products', productRouter)
 app.use('/api/users', userRouter)
+app.use('/api/orders', orderRouter)
 
 app.use(notFound)
 app.use(errorHandler)
