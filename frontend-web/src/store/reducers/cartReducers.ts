@@ -18,6 +18,7 @@ import {
   CartActionTypes,
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
+  CART_SAVE_PAYMENT_METHOD,
   CART_SAVE_SHIPPING_ADDRESS
 } from '../actions/cartActionTypes'
 import { IAddress } from './models/addressModel'
@@ -26,6 +27,7 @@ import { ICart } from './models/cartModel'
 interface ICartState {
   cartItems: ICart[]
   shippingAddress: IAddress
+  paymentMethod?: string
 }
 const initialState: ICartState = {
   cartItems: [],
@@ -65,6 +67,10 @@ export const cartReducer = (
     case CART_SAVE_SHIPPING_ADDRESS:
       return updateObject(state, {
         shippingAddress: action.payload
+      })
+    case CART_SAVE_PAYMENT_METHOD:
+      return updateObject(state, {
+        paymentMethod: action.payload
       })
     default:
       return state
