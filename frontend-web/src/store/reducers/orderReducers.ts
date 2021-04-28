@@ -49,7 +49,7 @@ export const orderCreateReducer = (
       return updateObject(state, {
         loading: false,
         success: true,
-        order: action.type
+        order: action.payload
       })
     case ORDER_CREATE_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
@@ -80,7 +80,7 @@ export const orderDetailsReducer = (
     case ORDER_DETAILS_SUCCESS:
       return updateObject(state, {
         loading: false,
-        order: action.type
+        order: action.payload
       })
     case ORDER_DETAILS_FAIL:
       return updateObject(state, { loading: false, error: action.payload })

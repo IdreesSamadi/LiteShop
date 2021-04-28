@@ -26,4 +26,7 @@ export interface IOrder {
   taxPrice: number
   shippingPrice: number
   totalPrice: number
+  user?: any
+  isPaid?: boolean
+  isDelivered?: boolean
 }

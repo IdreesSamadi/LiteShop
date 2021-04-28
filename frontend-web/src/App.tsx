@@ -22,6 +22,7 @@ import Header from './components/Header'
 import CartScreen from './screens/CartScreen'
 import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
+import OrderScreen from './screens/OrderScreen'
 import PaymentScreen from './screens/PaymentScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import ProductScreen from './screens/ProductScreen'
@@ -35,6 +36,7 @@ const App: React.FC = () => {
       <Header />
       <main className="py-3">
         <Container>
+          <Route path="/order/:id" component={OrderScreen} />
           <Route path="/placeorder" component={PlaceOrderScreen} />
           <Route path="/payment" component={PaymentScreen} />
           <Route path="/shipping" component={ShippingScreen} />
