@@ -16,11 +16,12 @@
  */
 import express from 'express'
 
-import { addOrder } from '../controllers/order.controller'
+import { addOrder, getOrderById } from '../controllers/order.controller'
 import { protect } from '../middleware/authMiddleware'
 
 const router = express.Router()
 
 router.post('/', protect, addOrder)
+router.get('/:id', protect, getOrderById)
 
 export default router
