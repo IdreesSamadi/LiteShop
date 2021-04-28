@@ -19,23 +19,27 @@ import {
   OrderActionTypes,
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
-  ORDER_CREATE_SUCCESS
+  ORDER_CREATE_SUCCESS,
+  ORDER_DETAILS_FAIL,
+  ORDER_DETAILS_REQUEST,
+  ORDER_DETAILS_SUCCESS
 } from '../actions/orderActionTypes'
+import { IAddress } from './models/addressModel'
 import { IOrder } from './models/orderModel'
 
-interface IOrderState {
+interface IOrderCreateState {
   order: IOrder | {}
   loading: boolean
   error?: string
   success?: boolean
 }
-const initialState: IOrderState = {
+const initialState: IOrderCreateState = {
   order: {},
   loading: false
 }
 
 export const orderCreateReducer = (
-  state: IOrderState = initialState,
+  state: IOrderCreateState = initialState,
   action: OrderActionTypes
 ) => {
   switch (action.type) {
@@ -48,6 +52,37 @@ export const orderCreateReducer = (
         order: action.type
       })
     case ORDER_CREATE_FAIL:
+      return updateObject(state, { loading: false, error: action.payload })
+    default:
+      return state
+  }
+}
+
+interface IOrderDetailsState {
+  orderItems: IOrder[]
+  shippingAddress: IAddress | {}
+  loading: boolean
+  error?: string
+}
+const OrderDetailsState: IOrderDetailsState = {
+  orderItems: [],
+  shippingAddress: {},
+  loading: true
+}
+
+export const orderDetailsReducer = (
+  state: IOrderDetailsState = OrderDetailsState,
+  action: OrderActionTypes
+) => {
+  switch (action.type) {
+    case ORDER_DETAILS_REQUEST:
+      return updateObject(state, { loading: true })
+    case ORDER_DETAILS_SUCCESS:
+      return updateObject(state, {
+        loading: false,
+        order: action.type
+      })
+    case ORDER_DETAILS_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
     default:
       return state
