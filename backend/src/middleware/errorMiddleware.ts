@@ -3,7 +3,7 @@ import { ErrorRequestHandler, RequestHandler } from 'express'
 import config from '../config/config'
 
 const notFound: RequestHandler = (req, res, next) => {
-  const error = new Error('Not Found')
+  const error = new Error('Page Not Found')
   res.status(404)
   next(error)
 }

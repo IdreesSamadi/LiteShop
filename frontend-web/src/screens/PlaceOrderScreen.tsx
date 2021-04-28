@@ -14,19 +14,23 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-import React, { useState, FormEvent } from 'react'
-import { Button, Col, Row, ListGroup, Image, Card } from 'react-bootstrap'
+import React, { useEffect } from 'react'
+import { Button, Col, Row, ListGroup, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, RouteComponentProps } from 'react-router-dom'
 
 import CheckoutSteps from '../components/CheckoutSteps'
 import Message from '../components/Message'
 import { addDecimals } from '../shared/utility'
+import { createOrder } from '../store/actions/order'
 import { IAddress } from '../store/reducers/models/addressModel'
 import { ICart } from '../store/reducers/models/cartModel'
+import { IOrder } from '../store/reducers/models/orderModel'
 import { AppState } from '../store/store'
 
-const PlaceOrderScreen: React.FC = () => {
+interface Props extends RouteComponentProps {}
+
+const PlaceOrderScreen: React.FC<Props> = ({ history }) => {
   const {
     shippingAddress,
     paymentMethod,
@@ -37,6 +41,18 @@ const PlaceOrderScreen: React.FC = () => {
     cartItems: ICart[]
   } = useSelector((state: AppState) => state.cart)
 
+  const {
+    order,
+    success,
+    error
+  }: {
+    order: IOrder
+    success: boolean
+    error: string
+  } = useSelector((state: AppState) => state.orderCreate)
+
+  const dispatch = useDispatch()
+
   //calculate prices
   const itemsPrice = cartItems.reduce(
     (preValue, item) => preValue + item.price * item.qty,
@@ -46,7 +62,26 @@ const PlaceOrderScreen: React.FC = () => {
   const tax = addDecimals(0.15 * itemsPrice)
   const total = (itemsPrice + shipping + +tax).toFixed(2)
 
-  const placeOrderHandler = () => {}
+  useEffect(() => {
+    if (success) {
+      history.push(`/order/${order._id}`)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history, success])
+
+  const placeOrderHandler = () => {
+    dispatch(
+      createOrder({
+        orderItems: cartItems,
+        shippingAddress: shippingAddress,
+        paymentMethod: paymentMethod,
+        itemsPrice: itemsPrice,
+        shippingPrice: shipping,
+        taxPrice: +tax,
+        totalPrice: +total
+      })
+    )
+  }
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
@@ -139,7 +174,11 @@ const PlaceOrderScreen: React.FC = () => {
                 <Col>${total}</Col>
               </Row>
             </ListGroup.Item>
-
+            {error && (
+              <ListGroup.Item>
+                <Message message={error} variant="danger"></Message>
+              </ListGroup.Item>
+            )}
             <ListGroup.Item>
               <Button
                 block
