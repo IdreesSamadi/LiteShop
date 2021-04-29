@@ -20,6 +20,7 @@ import config from './config/config'
 import connectDB from './config/db'
 import logger from './config/logging'
 import { notFound, errorHandler } from './middleware/errorMiddleware'
+import adminRouter from './routes/admin.routes'
 import configRouter from './routes/config.routes'
 import orderRouter from './routes/order.routes'
 import productRouter from './routes/product.routes'
@@ -70,6 +71,7 @@ app.use('/api/products', productRouter)
 app.use('/api/users', userRouter)
 app.use('/api/orders', orderRouter)
 app.use('/api/config', configRouter)
+app.use('/api/admin', adminRouter)
 
 app.use(notFound)
 app.use(errorHandler)
