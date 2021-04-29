@@ -22,6 +22,8 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 import FromContainer from '../components/FromContainer'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import { updateUser } from '../store/actions/admin'
+import { ADMIN_UPDATE_USER_RESET } from '../store/actions/adminActionTypes'
 import { getUserDetails } from '../store/actions/user'
 import { AppState } from '../store/store'
 
@@ -39,18 +41,38 @@ const UserEditScreen: React.FC<Props> = ({ match, history }) => {
     (state: AppState) => state.userDetails
   )
 
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate
+  } = useSelector((state: AppState) => state.adminUpdateUser)
+
   useEffect(() => {
-    if (!user.name || user._id !== userId) {
-      dispatch(getUserDetails(userId, true))
+    if (successUpdate) {
+      dispatch({ type: ADMIN_UPDATE_USER_RESET }) // ! should this be Here
+      history.push('/admin/userlist')
     } else {
-      setName(user.name)
-      setEmail(user.email)
-      setIsAdmin(user.isAdmin)
+      if (!user.name || user._id !== userId) {
+        dispatch(getUserDetails(userId, true))
+      } else {
+        setName(user.name)
+        setEmail(user.email)
+        setIsAdmin(user.isAdmin)
+      }
     }
-  }, [dispatch, user, userId])
+  }, [dispatch, user, userId, successUpdate, history])
 
   const submitHandler = (e: FormEvent) => {
+    console.log(user)
     e.preventDefault()
+    dispatch(
+      updateUser({
+        _id: user._id,
+        name,
+        email,
+        isAdmin
+      })
+    )
   }
   return (
     <>
@@ -59,6 +81,10 @@ const UserEditScreen: React.FC<Props> = ({ match, history }) => {
       </Link>
       <FromContainer>
         <h1>Edit User</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate && (
+          <Message title="Error" message={errorUpdate} variant="danger" />
+        )}
         {loading ? (
           <Loader />
         ) : error ? (
@@ -90,7 +116,7 @@ const UserEditScreen: React.FC<Props> = ({ match, history }) => {
             </Form.Group>
 
             <Button type="submit" variant="primary">
-              Register
+              Update
             </Button>
           </Form>
         )}

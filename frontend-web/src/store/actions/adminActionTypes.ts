@@ -22,6 +22,12 @@ export const ADMIN_USERS_LIST_FAIL = 'ADMIN_USERS_LIST_FAIL'
 export const ADMIN_DELETE_USER_REQUEST = 'ADMIN_DELETE_USER_REQUEST'
 export const ADMIN_DELETE_USER_SUCCESS = 'ADMIN_DELETE_USER_SUCCESS'
 export const ADMIN_DELETE_USER_FAIL = 'ADMIN_DELETE_USER_FAIL'
+
+export const ADMIN_UPDATE_USER_REQUEST = 'ADMIN_UPDATE_USER_REQUEST'
+export const ADMIN_UPDATE_USER_SUCCESS = 'ADMIN_UPDATE_USER_SUCCESS'
+export const ADMIN_UPDATE_USER_FAIL = 'ADMIN_UPDATE_USER_FAIL'
+export const ADMIN_UPDATE_USER_RESET = 'ADMIN_UPDATE_USER_RESET'
+
 export interface AdminUsersListRequestAction {
   type: typeof ADMIN_USERS_LIST_REQUEST
 }
@@ -50,6 +56,25 @@ export interface AdminDeleteUserFailAction {
   payload: string
 }
 
+export interface AdminUpdateUserRequestAction {
+  type: typeof ADMIN_UPDATE_USER_REQUEST
+}
+
+export interface AdminUpdateUserSuccessAction {
+  type: typeof ADMIN_UPDATE_USER_SUCCESS
+  payload: any
+}
+
+export interface AdminUpdateUserFailAction {
+  type: typeof ADMIN_UPDATE_USER_FAIL
+  payload: string
+}
+
+export interface AdminUpdateUserResetAction {
+  type: typeof ADMIN_UPDATE_USER_RESET
+  payload: string
+}
+
 export type AdminActionTypes =
   | AdminUsersListFailAction
   | AdminUsersListSuccessAction
@@ -57,3 +82,7 @@ export type AdminActionTypes =
   | AdminDeleteUserFailAction
   | AdminDeleteUserSuccessAction
   | AdminDeleteUserRequestAction
+  | AdminUpdateUserFailAction
+  | AdminUpdateUserSuccessAction
+  | AdminUpdateUserRequestAction
+  | AdminUpdateUserResetAction

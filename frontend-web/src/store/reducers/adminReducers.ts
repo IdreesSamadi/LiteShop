@@ -20,6 +20,10 @@ import {
   ADMIN_DELETE_USER_FAIL,
   ADMIN_DELETE_USER_REQUEST,
   ADMIN_DELETE_USER_SUCCESS,
+  ADMIN_UPDATE_USER_FAIL,
+  ADMIN_UPDATE_USER_REQUEST,
+  ADMIN_UPDATE_USER_RESET,
+  ADMIN_UPDATE_USER_SUCCESS,
   ADMIN_USERS_LIST_FAIL,
   ADMIN_USERS_LIST_REQUEST,
   ADMIN_USERS_LIST_SUCCESS
@@ -69,6 +73,28 @@ export const adminDeleteUserReducer = (
       })
     case ADMIN_DELETE_USER_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
+    default:
+      return state
+  }
+}
+
+export const adminUpdateUserReducer = (
+  state = { user: {} },
+  action: AdminActionTypes
+) => {
+  switch (action.type) {
+    case ADMIN_UPDATE_USER_REQUEST:
+      return updateObject(state, { loading: true })
+    case ADMIN_UPDATE_USER_SUCCESS:
+      return updateObject(state, {
+        success: true,
+        loading: false
+      })
+    case ADMIN_UPDATE_USER_FAIL:
+      return updateObject(state, { loading: false, error: action.payload })
+
+    case ADMIN_UPDATE_USER_RESET:
+      return updateObject({}, { user: {} })
     default:
       return state
   }
