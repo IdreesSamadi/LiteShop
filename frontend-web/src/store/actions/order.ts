@@ -25,7 +25,10 @@ import {
   ORDER_CREATE_FAIL,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
-  ORDER_DETAILS_SUCCESS
+  ORDER_DETAILS_SUCCESS,
+  ORDER_PAY_FAIL,
+  ORDER_PAY_REQUEST,
+  ORDER_PAY_SUCCESS
 } from './orderActionTypes'
 
 export const createOrder = (order: IOrder) => async (
@@ -89,6 +92,45 @@ export const getOrderDetails = (id: string) => async (
   } catch (error) {
     dispatch({
       type: ORDER_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    })
+  }
+}
+
+export const payOrder = (orderId: string, paymentResult: any) => async (
+  dispatch: Dispatch,
+  getState: () => AppState
+) => {
+  try {
+    dispatch({
+      type: ORDER_PAY_REQUEST
+    })
+
+    const {
+      userLogin: { userInfo }
+    } = getState()
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    }
+    const { data } = await axios.put(
+      `/api/orders/${orderId}/pay`,
+      paymentResult,
+      config
+    )
+    dispatch({
+      type: ORDER_PAY_SUCCESS,
+      payload: data // ! might be redundant information
+    })
+  } catch (error) {
+    dispatch({
+      type: ORDER_PAY_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

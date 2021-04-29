@@ -24,6 +24,11 @@ export const ORDER_DETAILS_REQUEST = 'ORDER_DETAILS_REQUEST'
 export const ORDER_DETAILS_SUCCESS = 'ORDER_DETAILS_SUCCESS'
 export const ORDER_DETAILS_FAIL = 'ORDER_DETAILS_FAIL'
 
+export const ORDER_PAY_REQUEST = 'ORDER_PAY_REQUEST'
+export const ORDER_PAY_SUCCESS = 'ORDER_PAY_SUCCESS'
+export const ORDER_PAY_FAIL = 'ORDER_PAY_FAIL'
+export const ORDER_PAY_RESET = 'ORDER_PAY_RESET'
+
 export interface OrderCreateRequestAction {
   type: typeof ORDER_CREATE_REQUEST
 }
@@ -52,6 +57,24 @@ export interface OrderDetailsFailAction {
   payload: string
 }
 
+export interface OrderPayRequestAction {
+  type: typeof ORDER_PAY_REQUEST
+}
+
+export interface OrderPaySuccessAction {
+  type: typeof ORDER_PAY_SUCCESS
+}
+
+export interface OrderPayFailAction {
+  type: typeof ORDER_PAY_FAIL
+  payload: string
+}
+
+export interface OrderPayResetAction {
+  type: typeof ORDER_PAY_RESET
+  payload: string
+}
+
 export type OrderActionTypes =
   | OrderCreateFailAction
   | OrderCreateSuccessAction
@@ -59,3 +82,7 @@ export type OrderActionTypes =
   | OrderDetailsFailAction
   | OrderDetailsSuccessAction
   | OrderDetailsRequestAction
+  | OrderPayFailAction
+  | OrderPaySuccessAction
+  | OrderPayRequestAction
+  | OrderPayResetAction

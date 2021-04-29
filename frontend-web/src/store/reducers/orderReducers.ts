@@ -22,7 +22,11 @@ import {
   ORDER_CREATE_SUCCESS,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
-  ORDER_DETAILS_SUCCESS
+  ORDER_DETAILS_SUCCESS,
+  ORDER_PAY_FAIL,
+  ORDER_PAY_REQUEST,
+  ORDER_PAY_RESET,
+  ORDER_PAY_SUCCESS
 } from '../actions/orderActionTypes'
 import { IAddress } from './models/addressModel'
 import { IOrder } from './models/orderModel'
@@ -84,6 +88,36 @@ export const orderDetailsReducer = (
       })
     case ORDER_DETAILS_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
+    default:
+      return state
+  }
+}
+
+interface IOrderPayState {
+  success?: boolean
+  loading: boolean
+  error?: string
+}
+const OrderPayState: IOrderPayState = {
+  loading: false
+}
+
+export const orderPayReducer = (
+  state: IOrderPayState = OrderDetailsState,
+  action: OrderActionTypes
+) => {
+  switch (action.type) {
+    case ORDER_PAY_REQUEST:
+      return updateObject(state, { loading: true })
+    case ORDER_PAY_SUCCESS:
+      return updateObject(state, {
+        loading: false,
+        success: true
+      })
+    case ORDER_PAY_FAIL:
+      return updateObject(state, { loading: false, error: action.payload })
+    case ORDER_PAY_RESET:
+      return updateObject(state, {})
     default:
       return state
   }

@@ -21,7 +21,8 @@ import { AppAction } from './actions/index'
 import { cartReducer } from './reducers/cartReducers'
 import {
   orderCreateReducer,
-  orderDetailsReducer
+  orderDetailsReducer,
+  orderPayReducer
 } from './reducers/orderReducers'
 import {
   productReducer,
@@ -43,7 +44,8 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
-  orderDetails: orderDetailsReducer
+  orderDetails: orderDetailsReducer,
+  orderPay: orderPayReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
