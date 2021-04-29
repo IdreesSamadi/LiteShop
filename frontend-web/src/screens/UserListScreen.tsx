@@ -93,7 +93,7 @@ const UserListScreen: React.FC<Props> = ({ history }) => {
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`user/${user._id}/edit`}>
+                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
                     <Button variant="light" size="sm">
                       <Pen />
                     </Button>
@@ -115,10 +115,10 @@ const UserListScreen: React.FC<Props> = ({ history }) => {
           <Modal.Title>Delete User</Modal.Title>
         </Modal.Header>
         <Modal.Body>You Are About To Delete A User, Are You Sure?</Modal.Body>
-        <Button variant="secondary" onClick={modalCloseHandler}>
+        <Button block variant="secondary" onClick={modalCloseHandler}>
           Close
         </Button>
-        <Button variant="danger" onClick={deleteHandler}>
+        <Button block variant="danger" onClick={deleteHandler}>
           delete
         </Button>
       </Modal>

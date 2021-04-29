@@ -16,13 +16,20 @@
  */
 import express from 'express'
 
-import { deleteUser, getUsers } from '../controllers/admin.controller'
+import {
+  deleteUser,
+  getUserById,
+  getUsers,
+  updateUser
+} from '../controllers/admin.controller'
 import { isAdmin } from '../middleware/adminMiddleware'
 import { protect } from '../middleware/authMiddleware'
 
 const router = express.Router()
 
 router.get('/users', protect, isAdmin, getUsers)
+router.get('/:id', protect, isAdmin, getUserById)
 router.delete('/:id', protect, isAdmin, deleteUser)
+router.put('/:id', protect, isAdmin, updateUser)
 
 export default router

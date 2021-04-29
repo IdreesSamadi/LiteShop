@@ -131,7 +131,7 @@ export const register = (
   }
 }
 
-export const getUserDetails = (id: string) => async (
+export const getUserDetails = (id: string, admin?: boolean) => async (
   dispatch: Dispatch,
   getState: () => AppState
 ) => {
@@ -149,7 +149,11 @@ export const getUserDetails = (id: string) => async (
         Authorization: `Bearer ${userInfo.token}`
       }
     }
-    const { data } = await axios.get(`api/users/${id}`, config)
+    let url = `/api/users/${id}`
+    if (admin) {
+      url = `/api/admin/${id}`
+    }
+    const { data } = await axios.get(url, config)
     dispatch({
       type: USER_DETAILS_SUCCESS,
       payload: data

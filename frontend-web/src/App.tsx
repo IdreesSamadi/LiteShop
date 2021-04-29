@@ -29,6 +29,7 @@ import ProductScreen from './screens/ProductScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import ShippingScreen from './screens/ShippingScreen'
+import UserEditScreen from './screens/UserEditScreen'
 import UserListScreen from './screens/UserListScreen'
 
 const App: React.FC = () => {
@@ -38,6 +39,7 @@ const App: React.FC = () => {
       <main className="py-3">
         <Container>
           <Route path="/admin/userlist" component={UserListScreen} />
+          <Route path="/admin/user/:id/edit" component={UserEditScreen} />
           <Route path="/order/:id" component={OrderScreen} />
           <Route path="/placeorder" component={PlaceOrderScreen} />
           <Route path="/payment" component={PaymentScreen} />
