@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Navbar, Nav } from 'react-bootstrap'
+import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap'
 import { CartFill, PersonFill, BoxArrowRight } from 'react-bootstrap-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -46,10 +46,23 @@ const Header: React.FC = () => {
               ) : (
                 <LinkContainer to="/login">
                   <Nav.Link>
-                    <PersonFill className="h5 mr-1" />
+                    <PersonFill className="" />
                     Sign In
                   </Nav.Link>
                 </LinkContainer>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title="Admin" id="adminmenu">
+                  <LinkContainer to="/admin/userlist">
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/productlist">
+                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/orderlist">
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>
