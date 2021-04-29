@@ -19,6 +19,9 @@ import { Dispatch } from 'redux'
 
 import { AppState } from '../store'
 import {
+  ADMIN_DELETE_USER_FAIL,
+  ADMIN_DELETE_USER_REQUEST,
+  ADMIN_DELETE_USER_SUCCESS,
   ADMIN_USERS_LIST_FAIL,
   ADMIN_USERS_LIST_REQUEST,
   ADMIN_USERS_LIST_SUCCESS
@@ -50,6 +53,39 @@ export const listUsers = () => async (
   } catch (error) {
     dispatch({
       type: ADMIN_USERS_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    })
+  }
+}
+
+export const deleteUser = (id: string) => async (
+  dispatch: Dispatch,
+  getState: () => AppState
+) => {
+  try {
+    dispatch({
+      type: ADMIN_DELETE_USER_REQUEST
+    })
+
+    const {
+      userLogin: { userInfo }
+    } = getState()
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    }
+    await axios.delete(`/api/admin/${id}`, config)
+    dispatch({
+      type: ADMIN_DELETE_USER_SUCCESS
+    })
+  } catch (error) {
+    dispatch({
+      type: ADMIN_DELETE_USER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

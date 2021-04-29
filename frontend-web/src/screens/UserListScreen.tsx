@@ -14,28 +14,51 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-import React, { useEffect } from 'react'
-import { Button, Table } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { Button, Table, Modal } from 'react-bootstrap'
 import { X, Check2, Pen, Trash } from 'react-bootstrap-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
+import { RouteComponentProps } from 'react-router-dom'
 
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { listUsers } from '../store/actions/admin'
+import { deleteUser, listUsers } from '../store/actions/admin'
 import { AppState } from '../store/store'
 
-const UserListScreen: React.FC = () => {
+interface Props extends RouteComponentProps {}
+
+const UserListScreen: React.FC<Props> = ({ history }) => {
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [userId, setUserId] = useState<string>()
+
   const dispatch = useDispatch()
   const { loading, error, users } = useSelector(
     (state: AppState) => state.adminUsersList
   )
 
-  useEffect(() => {
-    dispatch(listUsers())
-  }, [dispatch])
+  const { userInfo } = useSelector((state: AppState) => state.userLogin)
+  const { success: successDelete } = useSelector(
+    (state: AppState) => state.adminDeleteUser
+  )
 
-  const deleteHandler = (id: string) => {}
+  useEffect(() => {
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(listUsers())
+    } else {
+      history.push('/login')
+    }
+  }, [dispatch, history, userInfo, successDelete])
+
+  const deleteHandler = () => {
+    if (userId) dispatch(deleteUser(userId))
+    setShowModal(false)
+  }
+  const deleteModalHandler = (id: string) => {
+    setUserId(id)
+    setShowModal(true)
+  }
+  const modalCloseHandler = () => setShowModal(false)
   return (
     <>
       <h1>Users</h1>
@@ -51,7 +74,7 @@ const UserListScreen: React.FC = () => {
               <th>NAME</th>
               <th>EMAIL</th>
               <th>ADMIN</th>
-              <th>----</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -78,7 +101,7 @@ const UserListScreen: React.FC = () => {
                   <Button
                     variant="danger"
                     size="sm"
-                    onClick={() => deleteHandler(user._id)}>
+                    onClick={() => deleteModalHandler(user._id)}>
                     <Trash />
                   </Button>
                 </td>
@@ -87,6 +110,18 @@ const UserListScreen: React.FC = () => {
           </tbody>
         </Table>
       )}
+      <Modal show={showModal} onHide={modalCloseHandler}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>You Are About To Delete A User, Are You Sure?</Modal.Body>
+        <Button variant="secondary" onClick={modalCloseHandler}>
+          Close
+        </Button>
+        <Button variant="danger" onClick={deleteHandler}>
+          delete
+        </Button>
+      </Modal>
     </>
   )
 }

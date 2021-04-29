@@ -17,6 +17,9 @@
 import { updateObject } from '../../shared/utility'
 import {
   AdminActionTypes,
+  ADMIN_DELETE_USER_FAIL,
+  ADMIN_DELETE_USER_REQUEST,
+  ADMIN_DELETE_USER_SUCCESS,
   ADMIN_USERS_LIST_FAIL,
   ADMIN_USERS_LIST_REQUEST,
   ADMIN_USERS_LIST_SUCCESS
@@ -46,6 +49,25 @@ export const adminUsersListReducer = (
         loading: false
       })
     case ADMIN_USERS_LIST_FAIL:
+      return updateObject(state, { loading: false, error: action.payload })
+    default:
+      return state
+  }
+}
+
+export const adminDeleteUserReducer = (
+  state = {},
+  action: AdminActionTypes
+) => {
+  switch (action.type) {
+    case ADMIN_DELETE_USER_REQUEST:
+      return updateObject(state, { loading: true })
+    case ADMIN_DELETE_USER_SUCCESS:
+      return updateObject(state, {
+        success: true,
+        loading: false
+      })
+    case ADMIN_DELETE_USER_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
     default:
       return state

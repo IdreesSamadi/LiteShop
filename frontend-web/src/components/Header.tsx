@@ -53,6 +53,7 @@ const Header: React.FC = () => {
               )}
               {userInfo && userInfo.isAdmin && (
                 <NavDropdown title="Admin" id="adminmenu">
+                  <NavDropdown.Header>Admin Menu</NavDropdown.Header>
                   <LinkContainer to="/admin/userlist">
                     <NavDropdown.Item>Users</NavDropdown.Item>
                   </LinkContainer>
