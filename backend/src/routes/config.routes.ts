@@ -20,6 +20,6 @@ import { getPaypalClientId } from '../controllers/config.controller'
 
 const router = express.Router()
 
-router.post('/paypal', getPaypalClientId)
+router.get('/paypal', getPaypalClientId)
 
 export default router

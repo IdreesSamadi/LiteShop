@@ -14,20 +14,25 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-import React, { useEffect } from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import { Col, Row, ListGroup, Image } from 'react-bootstrap'
+import { PayPalButton } from 'react-paypal-button-v2'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { getOrderDetails } from '../store/actions/order'
+import { getOrderDetails, payOrder } from '../store/actions/order'
+import { ORDER_PAY_RESET } from '../store/actions/orderActionTypes'
 import { IOrder } from '../store/reducers/models/orderModel'
 import { AppState } from '../store/store'
 
 interface Props extends RouteComponentProps<{ id: string }> {}
 
 const OrderScreen: React.FC<Props> = ({ match }) => {
+  const [sdkReady, setSdkReady] = useState<boolean>(false)
+
   const orderId: string = match.params.id
 
   const {
@@ -40,11 +45,47 @@ const OrderScreen: React.FC<Props> = ({ match }) => {
     error: string
   } = useSelector((state: AppState) => state.orderDetails)
 
+  const {
+    loading: loadingPay,
+    success: successPay
+  }: {
+    loading: boolean
+    success: boolean
+  } = useSelector((state: AppState) => state.orderPay)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getOrderDetails(orderId))
-  }, [dispatch, orderId])
+    // ? maybe this method should be put in order action
+    const addPayPalScript = async () => {
+      const { data: clientId }: { data: string } = await axios.get(
+        '/api/config/paypal'
+      )
+      const script: HTMLScriptElement = document.createElement('script')
+      script.type = 'text/javascript'
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
+      script.async = true
+      script.onload = () => {
+        setSdkReady(true)
+      }
+      document.body.appendChild(script)
+    }
+
+    if (!order || successPay) {
+      dispatch({ type: ORDER_PAY_RESET }) // ? questionable place to dispatch reason : to not refresh after successful payment
+      dispatch(getOrderDetails(orderId))
+    } else if (!order.isPaid) {
+      if (!(window as any).paypal) {
+        addPayPalScript()
+      }
+    } else {
+      setSdkReady(true)
+    }
+  }, [dispatch, orderId, successPay, order])
+
+  const successPaymentHandler = (paymentResult: any) => {
+    dispatch(payOrder(orderId, paymentResult))
+  }
 
   return loading ? (
     <Loader />
@@ -69,7 +110,7 @@ const OrderScreen: React.FC<Props> = ({ match }) => {
                 {order.shippingAddress.postalCode},
                 {order.shippingAddress.country}
               </p>
-              {order.isPaid ? (
+              {order.isDelivered ? (
                 <Message message="Delivered" variant="success"></Message>
               ) : (
                 <Message message="Not Delivered" variant="danger"></Message>
@@ -160,6 +201,18 @@ const OrderScreen: React.FC<Props> = ({ match }) => {
                 <Col>${order.totalPrice}</Col>
               </Row>
             </ListGroup.Item>
+            {!order.isPaid && (
+              <ListGroup.Item>
+                {loadingPay && <Loader />}
+                {!sdkReady ? (
+                  <Loader />
+                ) : (
+                  <PayPalButton
+                    amount={order.totalPrice}
+                    onSuccess={successPaymentHandler}></PayPalButton>
+                )}
+              </ListGroup.Item>
+            )}
           </ListGroup>
         </Col>
       </Row>

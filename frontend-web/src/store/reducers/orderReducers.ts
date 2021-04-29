@@ -103,7 +103,7 @@ const OrderPayState: IOrderPayState = {
 }
 
 export const orderPayReducer = (
-  state: IOrderPayState = OrderDetailsState,
+  state: IOrderPayState = OrderPayState,
   action: OrderActionTypes
 ) => {
   switch (action.type) {
@@ -117,7 +117,7 @@ export const orderPayReducer = (
     case ORDER_PAY_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
     case ORDER_PAY_RESET:
-      return updateObject(state, {})
+      return updateObject({}, {})
     default:
       return state
   }
