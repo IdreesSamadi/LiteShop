@@ -23,6 +23,9 @@ import {
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
+  ORDER_MY_LIST_FAIL,
+  ORDER_MY_LIST_REQUEST,
+  ORDER_MY_LIST_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_REQUEST,
   ORDER_PAY_RESET,
@@ -118,6 +121,35 @@ export const orderPayReducer = (
       return updateObject(state, { loading: false, error: action.payload })
     case ORDER_PAY_RESET:
       return updateObject({}, {})
+    default:
+      return state
+  }
+}
+
+interface IMyListState {
+  orders: any[]
+  loading: boolean
+  error?: string
+}
+const initialMyListState: IMyListState = {
+  orders: [],
+  loading: false
+}
+
+export const orderMyListReducer = (
+  state: IMyListState = initialMyListState,
+  action: OrderActionTypes
+) => {
+  switch (action.type) {
+    case ORDER_MY_LIST_REQUEST:
+      return updateObject(state, { loading: true })
+    case ORDER_MY_LIST_SUCCESS:
+      return updateObject(state, {
+        loading: false,
+        orders: action.payload
+      })
+    case ORDER_MY_LIST_FAIL:
+      return updateObject(state, { loading: false, error: action.payload })
     default:
       return state
   }

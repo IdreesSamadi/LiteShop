@@ -90,4 +90,11 @@ const updateOrderToPaid: RequestHandler<{ id: string }> = asyncHandler(
   }
 )
 
-export { addOrder, getOrderById, updateOrderToPaid }
+const getMyOrders: RequestHandler<{ id: string }> = asyncHandler(
+  async (req, res, next) => {
+    const orders = await Order.find({ user: (req as any).user._id })
+    res.json(orders)
+  }
+)
+
+export { addOrder, getOrderById, updateOrderToPaid, getMyOrders }

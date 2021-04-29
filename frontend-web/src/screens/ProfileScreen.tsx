@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 import React, { useState, useEffect, FormEvent } from 'react'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Table } from 'react-bootstrap'
+import { X } from 'react-bootstrap-icons'
 import { useDispatch, useSelector } from 'react-redux'
+import { LinkContainer } from 'react-router-bootstrap'
 import { RouteComponentProps } from 'react-router-dom'
 
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import { listMyOrder } from '../store/actions/order'
 import { getUserDetails, updateUserProfile } from '../store/actions/user'
+import { IOrder } from '../store/reducers/models/orderModel'
 import { AppState } from '../store/store'
 
 interface Props extends RouteComponentProps {}
@@ -41,12 +45,17 @@ const ProfileScreen: React.FC<Props> = ({ location, history }) => {
 
   const { success } = useSelector((state: AppState) => state.userUpdateProfile)
 
+  const { loading: loadingOrder, error: errorOrders, orders } = useSelector(
+    (state: AppState) => state.orderMyList
+  )
+
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
     } else {
       if (!user.name) {
         dispatch(getUserDetails('profile'))
+        dispatch(listMyOrder())
       } else {
         console.log(user.name)
         setName(user.name)
@@ -121,6 +130,54 @@ const ProfileScreen: React.FC<Props> = ({ location, history }) => {
       </Col>
       <Col md={9}>
         <h2>My Orders</h2>
+        {loadingOrder ? (
+          <Loader />
+        ) : errorOrders ? (
+          <Message message={errorOrders} variant="danger" title="Error" />
+        ) : (
+          <Table striped bordered hover responsive className="table-sm">
+            <thead>
+              <tr>
+                <th>ID </th>
+                <th>DATE </th>
+                <th>TOTAL </th>
+                <th>PAID </th>
+                <th> DELIVERED </th>
+                <th> ---- </th>
+              </tr>
+            </thead>
+            <tbody>
+              {(orders as IOrder[]).map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  <td>{order.createdAt!.substring(0, 10)}</td>
+                  <td>{order.totalPrice}</td>
+                  <td className="text-center">
+                    {order.isPaid ? (
+                      order.paidAt!.substring(0, 10)
+                    ) : (
+                      <X className="text-danger" />
+                    )}
+                  </td>
+                  <td className="text-center">
+                    {order.isDelivered ? (
+                      order.deliveredAt!.substring(0, 10)
+                    ) : (
+                      <X className="text-danger" />
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/order/${order._id}`}>
+                      <Button size="sm" variant="light">
+                        Details
+                      </Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   )

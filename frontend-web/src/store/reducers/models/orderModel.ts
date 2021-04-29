@@ -29,4 +29,7 @@ export interface IOrder {
   user?: any
   isPaid?: boolean
   isDelivered?: boolean
+  createdAt?: string
+  paidAt?: string
+  deliveredAt?: string
 }
