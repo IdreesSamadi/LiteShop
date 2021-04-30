@@ -43,6 +43,8 @@ import {
 interface IListState {
   loading: boolean
   products: IProduct[]
+  pages?: number
+  page?: number
   error?: string
 }
 
@@ -70,7 +72,12 @@ export const productReducer = (
     case PRODUCT_LIST_REQUEST:
       return updateObject(state, { loading: true, products: [] })
     case PRODUCT_LIST_SUCCESS:
-      return updateObject(state, { loading: false, products: action.payload })
+      return updateObject(state, {
+        loading: false,
+        products: action.payload.products,
+        pages: +action.payload.pages,
+        page: +action.payload.page
+      })
     case PRODUCT_LIST_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
     default:

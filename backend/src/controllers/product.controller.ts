@@ -23,16 +23,20 @@ import Product from '../models/product.model'
 import Review from '../models/review.model'
 
 const getProducts: RequestHandler = asyncHandler(async (req, res, next) => {
+  const pageSize = 10
+  const page = +req.query.pageNumber! || 1
   let keyword = {}
   if (req.query.keyword) {
     keyword = {
       name: { $regex: req.query.keyword, $options: 'i' }
     }
   }
-
+  const count = await Product.countDocuments(keyword)
   const products = await Product.find(keyword)
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
 
-  res.json(products)
+  res.json({ products, page, pages: Math.ceil(count / pageSize) })
 })
 
 const getProduct: RequestHandler<{ id: string }> = asyncHandler(

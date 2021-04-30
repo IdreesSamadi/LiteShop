@@ -41,12 +41,15 @@ import {
   PRODUCT_CREATE_REVIEW_RESET
 } from './productActionTypes'
 
-export const listProducts = (keyword: string = '') => async (
-  dispatch: Dispatch<ProductActionTypes>
-) => {
+export const listProducts = (
+  keyword: string = '',
+  pageNumber: string = ''
+) => async (dispatch: Dispatch<ProductActionTypes>) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })
-    const { data } = await axios.get(`/api/products?keyword=${keyword}`)
+    const { data } = await axios.get(
+      `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+    )
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,

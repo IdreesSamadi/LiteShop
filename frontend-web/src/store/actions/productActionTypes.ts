@@ -47,7 +47,7 @@ export interface ProductListRequestAction {
 
 export interface ProductListSuccessAction {
   type: typeof PRODUCT_LIST_SUCCESS
-  payload: IProduct[]
+  payload: { products: IProduct[]; pages: number; page: number }
 }
 
 export interface ProductListFailAction {
