@@ -21,7 +21,8 @@ import {
   getOrderById,
   updateOrderToPaid,
   getMyOrders,
-  getOrders
+  getOrders,
+  updateOrderToDelivered
 } from '../controllers/order.controller'
 import { isAdmin } from '../middleware/adminMiddleware'
 import { protect } from '../middleware/authMiddleware'
@@ -33,5 +34,6 @@ router.get('/', protect, isAdmin, getOrders)
 router.get('/myorders', protect, getMyOrders)
 router.get('/:id', protect, getOrderById)
 router.put('/:id/pay', protect, updateOrderToPaid)
+router.put('/:id/deliver', protect, isAdmin, updateOrderToDelivered)
 
 export default router

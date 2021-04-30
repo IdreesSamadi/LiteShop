@@ -36,7 +36,11 @@ export const ORDER_MY_LIST_FAIL = 'ORDER_MY_LIST_FAIL'
 export const ORDER_LIST_REQUEST = 'ORDER_LIST_REQUEST'
 export const ORDER_LIST_SUCCESS = 'ORDER_LIST_SUCCESS'
 export const ORDER_LIST_FAIL = 'ORDER_LIST_FAIL'
-export const ORDER_LIST_RESET = 'ORDER_LIST_RESET'
+
+export const ORDER_DELIVER_REQUEST = 'ORDER_DELIVER_REQUEST'
+export const ORDER_DELIVER_SUCCESS = 'ORDER_DELIVER_SUCCESS'
+export const ORDER_DELIVER_FAIL = 'ORDER_DELIVER_FAIL'
+export const ORDER_DELIVER_RESET = 'ORDER_DELIVER_RESET'
 export interface OrderCreateRequestAction {
   type: typeof ORDER_CREATE_REQUEST
 }
@@ -80,7 +84,6 @@ export interface OrderPayFailAction {
 
 export interface OrderPayResetAction {
   type: typeof ORDER_PAY_RESET
-  payload: string
 }
 
 export interface OrderMyListRequestAction {
@@ -111,8 +114,23 @@ export interface OrderListFailAction {
   payload: string
 }
 
-export interface OrderListResetAction {
-  type: typeof ORDER_LIST_RESET
+export interface OrderDeliverSuccessAction {
+  type: typeof ORDER_DELIVER_SUCCESS
+}
+
+export interface OrderDeliverFailAction {
+  type: typeof ORDER_DELIVER_FAIL
+  payload: string
+}
+
+export interface OrderDeliverRequestAction {
+  type: typeof ORDER_DELIVER_REQUEST
+  payload: string
+}
+
+export interface OrderDeliverResetAction {
+  type: typeof ORDER_DELIVER_RESET
+  payload: string
 }
 
 export type OrderActionTypes =
@@ -132,4 +150,7 @@ export type OrderActionTypes =
   | OrderListFailAction
   | OrderListSuccessAction
   | OrderListRequestAction
-  | OrderListResetAction
+  | OrderDeliverFailAction
+  | OrderDeliverSuccessAction
+  | OrderDeliverRequestAction
+  | OrderDeliverResetAction

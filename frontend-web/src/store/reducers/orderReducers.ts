@@ -20,6 +20,10 @@ import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
+  ORDER_DELIVER_FAIL,
+  ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_RESET,
+  ORDER_DELIVER_SUCCESS,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
@@ -172,6 +176,27 @@ export const orderListReducer = (
       })
     case ORDER_LIST_FAIL:
       return updateObject(state, { loading: false, error: action.payload })
+    default:
+      return state
+  }
+}
+
+export const orderDeliverReducer = (
+  state: IOrderPayState = OrderPayState,
+  action: OrderActionTypes
+) => {
+  switch (action.type) {
+    case ORDER_DELIVER_REQUEST:
+      return updateObject(state, { loading: true })
+    case ORDER_DELIVER_SUCCESS:
+      return updateObject(state, {
+        loading: false,
+        success: true
+      })
+    case ORDER_DELIVER_FAIL:
+      return updateObject(state, { loading: false, error: action.payload })
+    case ORDER_DELIVER_RESET:
+      return updateObject({}, {})
     default:
       return state
   }

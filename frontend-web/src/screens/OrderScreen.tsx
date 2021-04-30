@@ -16,21 +16,24 @@
  */
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Col, Row, ListGroup, Image } from 'react-bootstrap'
+import { Col, Row, ListGroup, Image, Button } from 'react-bootstrap'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { getOrderDetails, payOrder } from '../store/actions/order'
-import { ORDER_PAY_RESET } from '../store/actions/orderActionTypes'
+import { deliverOrder, getOrderDetails, payOrder } from '../store/actions/order'
+import {
+  ORDER_DELIVER_RESET,
+  ORDER_PAY_RESET
+} from '../store/actions/orderActionTypes'
 import { IOrder } from '../store/reducers/models/orderModel'
 import { AppState } from '../store/store'
 
 interface Props extends RouteComponentProps<{ id: string }> {}
 
-const OrderScreen: React.FC<Props> = ({ match }) => {
+const OrderScreen: React.FC<Props> = ({ match, history }) => {
   const [sdkReady, setSdkReady] = useState<boolean>(false)
 
   const orderId: string = match.params.id
@@ -53,9 +56,22 @@ const OrderScreen: React.FC<Props> = ({ match }) => {
     success: boolean
   } = useSelector((state: AppState) => state.orderPay)
 
+  const {
+    loading: loadingDeliver,
+    success: successDeliver
+  }: {
+    loading: boolean
+    success: boolean
+  } = useSelector((state: AppState) => state.orderDeliver)
+
+  const { userInfo } = useSelector((state: AppState) => state.userLogin)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push('/login')
+    }
     // ? maybe this method should be put in order action
     const addPayPalScript = async () => {
       const { data: clientId }: { data: string } = await axios.get(
@@ -71,8 +87,9 @@ const OrderScreen: React.FC<Props> = ({ match }) => {
       document.body.appendChild(script)
     }
 
-    if (!order || successPay) {
+    if (!order || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET }) // ? questionable place to dispatch reason : to not refresh after successful payment
+      dispatch({ type: ORDER_DELIVER_RESET }) // ? questionable place to dispatch reason : to not refresh after successful payment
       dispatch(getOrderDetails(orderId))
     } else if (!order.isPaid) {
       if (!(window as any).paypal) {
@@ -81,10 +98,14 @@ const OrderScreen: React.FC<Props> = ({ match }) => {
     } else {
       setSdkReady(true)
     }
-  }, [dispatch, orderId, successPay, order])
+  }, [dispatch, orderId, successPay, order, successDeliver])
 
   const successPaymentHandler = (paymentResult: any) => {
     dispatch(payOrder(orderId, paymentResult))
+  }
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(orderId!))
   }
 
   return loading ? (
@@ -180,21 +201,18 @@ const OrderScreen: React.FC<Props> = ({ match }) => {
                 </Col>
               </Row>
             </ListGroup.Item>
-
             <ListGroup.Item>
               <Row>
                 <Col>Shipping</Col>
                 <Col>${order.shippingPrice}</Col>
               </Row>
             </ListGroup.Item>
-
             <ListGroup.Item>
               <Row>
                 <Col>Tax</Col>
                 <Col>${order.taxPrice}</Col>
               </Row>
             </ListGroup.Item>
-
             <ListGroup.Item>
               <Row>
                 <Col>Total</Col>
@@ -213,6 +231,18 @@ const OrderScreen: React.FC<Props> = ({ match }) => {
                 )}
               </ListGroup.Item>
             )}
+            {loadingDeliver && <Loader />}
+
+            {userInfo &&
+              userInfo.isAdmin &&
+              order.isPaid &&
+              !order.isDelivered && (
+                <ListGroup.Item>
+                  <Button type="button" block onClick={deliverHandler}>
+                    Mark As Delivered
+                  </Button>
+                </ListGroup.Item>
+              )}
           </ListGroup>
         </Col>
       </Row>
