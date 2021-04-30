@@ -18,7 +18,9 @@ import express from 'express'
 import {
   getProduct,
   getProducts,
-  deleteProduct
+  deleteProduct,
+  createProduct,
+  updateProduct
 } from '../controllers/product.controller'
 import { isAdmin } from '../middleware/adminMiddleware'
 import { protect } from '../middleware/authMiddleware'
@@ -27,6 +29,8 @@ const router = express.Router()
 
 router.get('/:id', getProduct)
 router.delete('/:id', protect, isAdmin, deleteProduct)
+router.put('/:id', protect, isAdmin, updateProduct)
 router.get('/', getProducts)
+router.post('/', protect, isAdmin, createProduct)
 
 export default router

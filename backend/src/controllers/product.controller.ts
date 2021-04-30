@@ -16,6 +16,7 @@
 import { RequestHandler } from 'express'
 import asyncHandler from 'express-async-handler'
 
+import IProduct from '../interfaces/product.interface'
 import Product from '../models/product.model'
 
 const getProducts: RequestHandler<{ id: string }> = asyncHandler(
@@ -52,4 +53,45 @@ const deleteProduct: RequestHandler<{ id: string }> = asyncHandler(
   }
 )
 
-export { getProduct, getProducts, deleteProduct }
+const createProduct: RequestHandler<{ id: string }> = asyncHandler(
+  async (req, res, next) => {
+    const product: IProduct = new Product({
+      name: 'Sample name',
+      price: 0,
+      user: (req as any).user._id,
+      image: '/images/sample.jpg',
+      brand: 'Sample Brand',
+      category: 'Sample Category',
+      countInStock: 0,
+      numReviews: 0,
+      description: 'Sample description'
+    })
+    const createdProduct = await product.save()
+    res.status(201).json(createProduct)
+  }
+)
+
+const updateProduct: RequestHandler<{ id: string }> = asyncHandler(
+  async (req, res, next) => {
+    const productData: IProduct = req.body
+
+    const product = await Product.findById(req.params.id)
+    if (product) {
+      product.name = productData.name
+      product.price = productData.price
+      product.description = productData.description
+      product.image = productData.image
+      product.brand = productData.brand
+      product.category = productData.category
+      product.countInStock = productData.countInStock
+
+      const updatedProduct = await product.save()
+      res.status(201).json(updatedProduct)
+    } else {
+      res.status(404)
+      throw new Error('Product Not Found')
+    }
+  }
+)
+
+export { getProduct, getProducts, deleteProduct, updateProduct, createProduct }
