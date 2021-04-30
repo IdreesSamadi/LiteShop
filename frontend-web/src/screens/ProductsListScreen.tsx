@@ -24,7 +24,12 @@ import { RouteComponentProps } from 'react-router-dom'
 import IProduct from '../Models/product'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { listProducts, deleteProduct } from '../store/actions/product'
+import {
+  listProducts,
+  deleteProduct,
+  createProduct
+} from '../store/actions/product'
+import { PRODUCT_CREATE_RESET } from '../store/actions/productActionTypes'
 import { AppState } from '../store/store'
 
 interface Props extends RouteComponentProps {}
@@ -54,17 +59,35 @@ const ProductsListScreen: React.FC<Props> = ({ history, match }) => {
     error: string | undefined
   } = useSelector((state: AppState) => state.productDelete)
 
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    product: createdProduct
+  }: {
+    loading: boolean
+    success: boolean
+    error: string | undefined
+    product: IProduct
+  } = useSelector((state: AppState) => state.productCreate)
+
   const { userInfo } = useSelector((state: AppState) => state.userLogin)
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(listProducts())
-    } else {
+    dispatch({ type: PRODUCT_CREATE_RESET })
+    if (!userInfo.isAdmin) {
       history.push('/login')
     }
-  }, [dispatch, history, userInfo, success])
+    if (successCreate) {
+      history.push(`/admin/product/${createdProduct._id}/edit`)
+    } else {
+      dispatch(listProducts())
+    }
+  }, [dispatch, history, userInfo, success, successCreate, createdProduct])
 
-  const createProductHandler = () => {}
+  const createProductHandler = () => {
+    dispatch(createProduct())
+  }
 
   const deleteHandler = () => {
     if (productId) {
@@ -93,6 +116,10 @@ const ProductsListScreen: React.FC<Props> = ({ history, match }) => {
       {loadingDelete && <Loader />}
       {errorDelete && (
         <Message title="Error" message={errorDelete} variant="danger" />
+      )}
+      {loadingCreate && <Loader />}
+      {errorCreate && (
+        <Message title="Error" message={errorCreate} variant="danger" />
       )}
       {loading ? (
         <Loader />

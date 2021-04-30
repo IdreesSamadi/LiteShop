@@ -27,6 +27,11 @@ export const PRODUCT_DELETE_REQUEST = 'PRODUCT_DELETE_REQUEST'
 export const PRODUCT_DELETE_SUCCESS = 'PRODUCT_DELETE_SUCCESS'
 export const PRODUCT_DELETE_FAIL = 'PRODUCT_DELETE_FAIL'
 
+export const PRODUCT_CREATE_REQUEST = 'PRODUCT_CREATE_REQUEST'
+export const PRODUCT_CREATE_SUCCESS = 'PRODUCT_CREATE_SUCCESS'
+export const PRODUCT_CREATE_FAIL = 'PRODUCT_CREATE_FAIL'
+export const PRODUCT_CREATE_RESET = 'PRODUCT_CREATE_RESET'
+
 export interface ProductListRequestAction {
   type: typeof PRODUCT_LIST_REQUEST
 }
@@ -68,6 +73,24 @@ export interface ProductDeleteFailAction {
   payload: string
 }
 
+export interface ProductCreateRequestAction {
+  type: typeof PRODUCT_CREATE_REQUEST
+}
+
+export interface ProductCreateSuccessAction {
+  type: typeof PRODUCT_CREATE_SUCCESS
+  payload: IProduct
+}
+
+export interface ProductCreateFailAction {
+  type: typeof PRODUCT_CREATE_FAIL
+  payload: string
+}
+
+export interface ProductCreateResetAction {
+  type: typeof PRODUCT_CREATE_RESET
+}
+
 export type ProductActionTypes =
   | ProductListRequestAction
   | ProductListSuccessAction
@@ -78,3 +101,7 @@ export type ProductActionTypes =
   | ProductDeleteRequestAction
   | ProductDeleteSuccessAction
   | ProductDeleteFailAction
+  | ProductCreateRequestAction
+  | ProductCreateSuccessAction
+  | ProductCreateFailAction
+  | ProductCreateResetAction
