@@ -97,4 +97,11 @@ const getMyOrders: RequestHandler<{ id: string }> = asyncHandler(
   }
 )
 
-export { addOrder, getOrderById, updateOrderToPaid, getMyOrders }
+const getOrders: RequestHandler<{ id: string }> = asyncHandler(
+  async (req, res, next) => {
+    const orders = await Order.find({}).populate('user', 'name')
+    res.json(orders)
+  }
+)
+
+export { addOrder, getOrderById, updateOrderToPaid, getMyOrders, getOrders }

@@ -32,6 +32,11 @@ export const ORDER_PAY_RESET = 'ORDER_PAY_RESET'
 export const ORDER_MY_LIST_REQUEST = 'ORDER_MY_LIST_REQUEST'
 export const ORDER_MY_LIST_SUCCESS = 'ORDER_MY_LIST_SUCCESS'
 export const ORDER_MY_LIST_FAIL = 'ORDER_MY_LIST_FAIL'
+
+export const ORDER_LIST_REQUEST = 'ORDER_LIST_REQUEST'
+export const ORDER_LIST_SUCCESS = 'ORDER_LIST_SUCCESS'
+export const ORDER_LIST_FAIL = 'ORDER_LIST_FAIL'
+export const ORDER_LIST_RESET = 'ORDER_LIST_RESET'
 export interface OrderCreateRequestAction {
   type: typeof ORDER_CREATE_REQUEST
 }
@@ -92,6 +97,24 @@ export interface OrderMyListFailAction {
   payload: string
 }
 
+export interface OrderListRequestAction {
+  type: typeof ORDER_LIST_REQUEST
+}
+
+export interface OrderListSuccessAction {
+  type: typeof ORDER_LIST_SUCCESS
+  payload: IOrder[]
+}
+
+export interface OrderListFailAction {
+  type: typeof ORDER_LIST_FAIL
+  payload: string
+}
+
+export interface OrderListResetAction {
+  type: typeof ORDER_LIST_RESET
+}
+
 export type OrderActionTypes =
   | OrderCreateFailAction
   | OrderCreateSuccessAction
@@ -106,3 +129,7 @@ export type OrderActionTypes =
   | OrderMyListFailAction
   | OrderMyListSuccessAction
   | OrderMyListRequestAction
+  | OrderListFailAction
+  | OrderListSuccessAction
+  | OrderListRequestAction
+  | OrderListResetAction
