@@ -21,6 +21,7 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 import IProduct from '../Models/product'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Meta from '../components/Meta'
 import Rating from '../components/Rating'
 import {
   createProductReview,
@@ -97,6 +98,7 @@ const ProductScreen: React.FC<Props> = ({ history, match }) => {
         <Message message={error} title="Error" variant="danger" />
       ) : (
         <>
+          <Meta title={product.name} />
           <Row>
             <Col md={5} lg={6}>
               <Image src={product.image} alt={product.name} fluid />
