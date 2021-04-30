@@ -29,7 +29,11 @@ import {
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_SUCCESS,
-  PRODUCT_CREATE_RESET
+  PRODUCT_CREATE_RESET,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_RESET,
+  PRODUCT_UPDATE_SUCCESS
 } from '../actions/productActionTypes'
 
 interface IListState {
@@ -119,6 +123,28 @@ export const productCreateReducer = (
       return updateObject(state, { loading: false, error: action.payload })
     case PRODUCT_CREATE_RESET:
       return updateObject({}, {})
+    default:
+      return state
+  }
+}
+
+export const productUpdateReducer = (
+  state = { product: {} },
+  action: ProductActionTypes
+) => {
+  switch (action.type) {
+    case PRODUCT_UPDATE_REQUEST:
+      return updateObject(state, { loading: true })
+    case PRODUCT_UPDATE_SUCCESS:
+      return updateObject(state, {
+        loading: false,
+        success: true,
+        product: action.payload
+      })
+    case PRODUCT_UPDATE_FAIL:
+      return updateObject(state, { loading: false, error: action.payload })
+    case PRODUCT_UPDATE_RESET:
+      return updateObject(state, { product: {} })
     default:
       return state
   }

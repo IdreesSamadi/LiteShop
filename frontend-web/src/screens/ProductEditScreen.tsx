@@ -14,23 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
-/*
- *   Copyright (c) 2021 Idrees Samadi
- *   All rights reserved.
-
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
-
- *   http://www.apache.org/licenses/LICENSE-2.0
-
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
 import React, { useState, useEffect, FormEvent } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -39,8 +22,8 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 import FromContainer from '../components/FromContainer'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { updateUser } from '../store/actions/admin'
-import { listProductDetails } from '../store/actions/product'
+import { listProductDetails, updateProduct } from '../store/actions/product'
+import { PRODUCT_UPDATE_RESET } from '../store/actions/productActionTypes'
 import { AppState } from '../store/store'
 
 interface Props extends RouteComponentProps<{ id: string }> {}
@@ -61,22 +44,45 @@ const ProductEditScreen: React.FC<Props> = ({ match, history }) => {
     (state: AppState) => state.productDetails
   )
 
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate
+  } = useSelector((state: AppState) => state.productUpdate)
+
   useEffect(() => {
-    if (!product.name || product._id !== productId) {
-      dispatch(listProductDetails(productId))
+    if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET })
+      history.push('/admin/productlist')
     } else {
-      setName(product.name)
-      setPrice(product.price)
-      setImage(product.image)
-      setCategory(product.category)
-      setDescription(product.description)
-      setCountInStock(product.countInStock)
-      setBrand(product.brand)
+      if (!product.name || product._id !== productId) {
+        dispatch(listProductDetails(productId))
+      } else {
+        setName(product.name)
+        setPrice(product.price)
+        setImage(product.image)
+        setCategory(product.category)
+        setDescription(product.description)
+        setCountInStock(product.countInStock)
+        setBrand(product.brand)
+      }
     }
-  }, [dispatch, product, productId, history])
+  }, [dispatch, product, productId, history, successUpdate])
 
   const submitHandler = (e: FormEvent) => {
     e.preventDefault()
+    dispatch(
+      updateProduct({
+        _id: productId,
+        name,
+        price,
+        image,
+        category,
+        brand,
+        description,
+        countInStock
+      })
+    )
   }
   return (
     <>
@@ -85,10 +91,10 @@ const ProductEditScreen: React.FC<Props> = ({ match, history }) => {
       </Link>
       <FromContainer>
         <h1>Edit Product</h1>
-        {/* {loadingUpdate && <Loader />}
+        {loadingUpdate && <Loader />}
         {errorUpdate && (
           <Message title="Error" message={errorUpdate} variant="danger" />
-        )} */}
+        )}
         {loading ? (
           <Loader />
         ) : error ? (

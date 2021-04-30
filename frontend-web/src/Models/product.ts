@@ -7,9 +7,9 @@ interface IProduct {
   category: string
   price: number
   countInStock: number
-  rating: number
-  numReviews: number
-  reviews: any
+  rating?: number
+  numReviews?: number
+  reviews?: any
 }
 
 export default IProduct
