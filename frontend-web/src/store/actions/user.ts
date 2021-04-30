@@ -18,6 +18,7 @@ import { Dispatch } from 'redux'
 
 import { IUserLogin } from '../reducers/models/UserLoginModel'
 import { AppState } from '../store'
+import { PRODUCT_CREATE_REVIEW_RESET } from './productActionTypes'
 import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
@@ -82,6 +83,7 @@ export const logout = () => (dispatch: Dispatch) => {
   dispatch({
     type: USER_DETAILS_RESET
   })
+  dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
 }
 
 export const register = (

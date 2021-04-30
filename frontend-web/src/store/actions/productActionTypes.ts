@@ -37,6 +37,10 @@ export const PRODUCT_UPDATE_SUCCESS = 'PRODUCT_UPDATE_SUCCESS'
 export const PRODUCT_UPDATE_FAIL = 'PRODUCT_UPDATE_FAIL'
 export const PRODUCT_UPDATE_RESET = 'PRODUCT_UPDATE_RESET'
 
+export const PRODUCT_CREATE_REVIEW_REQUEST = 'PRODUCT_CREATE_REVIEW_REQUEST'
+export const PRODUCT_CREATE_REVIEW_SUCCESS = 'PRODUCT_CREATE_REVIEW_SUCCESS'
+export const PRODUCT_CREATE_REVIEW_FAIL = 'PRODUCT_CREATE_REVIEW_FAIL'
+export const PRODUCT_CREATE_REVIEW_RESET = 'PRODUCT_CREATE_REVIEW_RESET'
 export interface ProductListRequestAction {
   type: typeof PRODUCT_LIST_REQUEST
 }
@@ -114,6 +118,24 @@ export interface ProductUpdateResetAction {
   type: typeof PRODUCT_UPDATE_RESET
 }
 
+export interface ProductCreateReviewRequestAction {
+  type: typeof PRODUCT_CREATE_REVIEW_REQUEST
+}
+
+export interface ProductCreateReviewSuccessAction {
+  type: typeof PRODUCT_CREATE_REVIEW_SUCCESS
+  payload: IProduct
+}
+
+export interface ProductCreateReviewFailAction {
+  type: typeof PRODUCT_CREATE_REVIEW_FAIL
+  payload: string
+}
+
+export interface ProductCreateReviewResetAction {
+  type: typeof PRODUCT_CREATE_REVIEW_RESET
+}
+
 export type ProductActionTypes =
   | ProductListRequestAction
   | ProductListSuccessAction
@@ -132,3 +154,7 @@ export type ProductActionTypes =
   | ProductUpdateSuccessAction
   | ProductUpdateFailAction
   | ProductUpdateResetAction
+  | ProductCreateReviewRequestAction
+  | ProductCreateReviewSuccessAction
+  | ProductCreateReviewFailAction
+  | ProductCreateReviewResetAction

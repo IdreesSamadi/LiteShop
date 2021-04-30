@@ -98,7 +98,7 @@ const OrderScreen: React.FC<Props> = ({ match, history }) => {
     } else {
       setSdkReady(true)
     }
-  }, [dispatch, orderId, successPay, order, successDeliver])
+  }, [dispatch, orderId, successPay, order, successDeliver, userInfo, history])
 
   const successPaymentHandler = (paymentResult: any) => {
     dispatch(payOrder(orderId, paymentResult))

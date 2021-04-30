@@ -102,7 +102,8 @@ const ProductEditScreen: React.FC<Props> = ({ match, history }) => {
         category,
         brand,
         description,
-        countInStock
+        countInStock,
+        reviews: []
       })
     )
   }

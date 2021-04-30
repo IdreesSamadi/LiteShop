@@ -9,7 +9,7 @@ interface IProduct {
   countInStock: number
   rating?: number
   numReviews?: number
-  reviews?: any
+  reviews: any[]
 }
 
 export default IProduct

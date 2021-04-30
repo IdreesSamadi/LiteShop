@@ -31,7 +31,7 @@ const getProducts: RequestHandler<{ id: string }> = asyncHandler(
 
 const getProduct: RequestHandler<{ id: string }> = asyncHandler(
   async (req, res, next) => {
-    const product = await Product.findById(req.params.id)
+    const product = await Product.findById(req.params.id).populate('reviews')
 
     if (product) {
       res.json(product)
@@ -70,7 +70,7 @@ const createProduct: RequestHandler<{ id: string }> = asyncHandler(
       description: 'Sample description'
     })
     const createdProduct = await product.save()
-    res.status(201).json(createProduct)
+    res.status(201).json(createdProduct)
   }
 )
 
@@ -101,21 +101,24 @@ const createProductReview: RequestHandler<{ id: string }> = asyncHandler(
   async (req, res, next) => {
     const { rating, comment }: { rating: number; comment: string } = req.body
 
-    const product: IProduct | null = await Product.findById(req.params.id)
+    const product: IProduct | null = await Product.findById(
+      req.params.id
+    ).populate('reviews', 'user comment rating')
     if (product) {
       const alreadyReviewed = product.reviews.find(
-        (r) => r.user.toString() === (req as any).user._id.toString()
+        (review) => review.user.toString() == (req as any).user._id
       )
+      console.log('alreadyReviewed', alreadyReviewed)
       if (alreadyReviewed) {
         res.status(400)
-        throw new Error('Product Already Reviewed')
+        throw new Error('You Have Already Reviewed This Product')
       }
-      const review = new Review({
+      const review = await new Review({
         name: (req as any).user.name,
-        rating: +rating,
+        rating,
         comment,
         user: (req as any).user._id
-      })
+      }).save()
 
       product.reviews.push(review)
       product.numReviews = product.reviews.length

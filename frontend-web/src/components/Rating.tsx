@@ -3,10 +3,10 @@ import { StarFill, Star, StarHalf } from 'react-bootstrap-icons'
 
 interface Props {
   value: number
-  text: string
+  text?: string
 }
 
-const Rating: React.FC<Props> = ({ value, text }) => {
+const Rating: React.FC<Props> = ({ value, text, children }) => {
   const stars = []
   let star
   for (let i = 0; i < 5; i++) {
@@ -26,6 +26,7 @@ const Rating: React.FC<Props> = ({ value, text }) => {
     <div className="rating">
       {stars}
       <span className="">{text && text}</span>
+      <span className="">{children && children}</span>
     </div>
   )
 }
