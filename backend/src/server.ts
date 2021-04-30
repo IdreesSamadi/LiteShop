@@ -24,6 +24,7 @@ import adminRouter from './routes/admin.routes'
 import configRouter from './routes/config.routes'
 import orderRouter from './routes/order.routes'
 import productRouter from './routes/product.routes'
+import uploadRouter from './routes/upload.routes'
 import userRouter from './routes/user.routes'
 
 const NAMESPACE = 'Server'
@@ -72,6 +73,7 @@ app.use('/api/users', userRouter)
 app.use('/api/orders', orderRouter)
 app.use('/api/config', configRouter)
 app.use('/api/admin', adminRouter)
+app.use('/api/upload', uploadRouter)
 
 app.use(notFound)
 app.use(errorHandler)
