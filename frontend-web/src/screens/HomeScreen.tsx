@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { RouteComponentProps } from 'react-router-dom'
 
 import IProduct from '../Models/product'
 import Loader from '../components/Loader'
@@ -9,15 +10,19 @@ import Product from '../components/Product'
 import { listProducts } from '../store/actions/product'
 import { AppState } from '../store/store'
 
-const HomeScreen: React.FC = () => {
+interface Props extends RouteComponentProps<{ keyword: string }> {}
+
+const HomeScreen: React.FC<Props> = ({ match }) => {
+  const keyword = match.params.keyword
+
   const dispatch = useDispatch()
   const { loading, error, products } = useSelector(
     (state: AppState) => state.productList
   )
 
   useEffect(() => {
-    dispatch(listProducts())
-  }, [dispatch])
+    dispatch(listProducts(keyword))
+  }, [dispatch, keyword])
 
   return (
     <>

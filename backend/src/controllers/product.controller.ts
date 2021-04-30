@@ -22,12 +22,18 @@ import IReview from '../interfaces/review.interface'
 import Product from '../models/product.model'
 import Review from '../models/review.model'
 
-const getProducts: RequestHandler<{ id: string }> = asyncHandler(
-  async (req, res, next) => {
-    const products = await Product.find({})
-    res.json(products)
+const getProducts: RequestHandler = asyncHandler(async (req, res, next) => {
+  let keyword = {}
+  if (req.query.keyword) {
+    keyword = {
+      name: { $regex: req.query.keyword, $options: 'i' }
+    }
   }
-)
+
+  const products = await Product.find(keyword)
+
+  res.json(products)
+})
 
 const getProduct: RequestHandler<{ id: string }> = asyncHandler(
   async (req, res, next) => {
