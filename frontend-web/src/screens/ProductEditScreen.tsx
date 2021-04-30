@@ -14,6 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+import axios from 'axios'
 import React, { useState, useEffect, FormEvent } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -38,6 +39,7 @@ const ProductEditScreen: React.FC<Props> = ({ match, history }) => {
   const [brand, setBrand] = useState<string>('')
   const [countInStock, setCountInStock] = useState<number>(0)
   const [description, setDescription] = useState<string>('')
+  const [uploading, setUploading] = useState<boolean>(false)
 
   const dispatch = useDispatch()
   const { loading, error, product } = useSelector(
@@ -68,6 +70,26 @@ const ProductEditScreen: React.FC<Props> = ({ match, history }) => {
       }
     }
   }, [dispatch, product, productId, history, successUpdate])
+
+  const uploadFileHandler = async (event: any) => {
+    const file = event.target.files[0]
+    const formData = new FormData()
+    formData.append('image', file)
+    setUploading(true)
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      const { data } = await axios.post('/api/upload', formData, config)
+      setImage(data)
+      setUploading(false)
+    } catch (error) {
+      console.log(error)
+      setUploading(false)
+    }
+  }
 
   const submitHandler = (e: FormEvent) => {
     e.preventDefault()
@@ -139,7 +161,7 @@ const ProductEditScreen: React.FC<Props> = ({ match, history }) => {
               <Form.Label>Brand</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Brand"
+                placeholder="Enter Brand Name"
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}></Form.Control>
             </Form.Group>
@@ -157,9 +179,16 @@ const ProductEditScreen: React.FC<Props> = ({ match, history }) => {
               <Form.Label>image</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Image"
+                placeholder="Enter Image Url"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}></Form.Control>
+              <Form.File
+                id="image-file"
+                label="Choose File"
+                custom
+                onChange={uploadFileHandler}>
+                {uploading && <Loader />}
+              </Form.File>
             </Form.Group>
             <Button type="submit" variant="primary">
               Update

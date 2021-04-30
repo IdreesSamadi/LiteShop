@@ -15,6 +15,7 @@
  */
 import bodyParser from 'body-parser'
 import express, { ErrorRequestHandler } from 'express'
+import path from 'path'
 
 import config from './config/config'
 import connectDB from './config/db'
@@ -74,6 +75,9 @@ app.use('/api/orders', orderRouter)
 app.use('/api/config', configRouter)
 app.use('/api/admin', adminRouter)
 app.use('/api/upload', uploadRouter)
+
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
 
 app.use(notFound)
 app.use(errorHandler)
