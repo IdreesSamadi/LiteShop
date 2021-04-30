@@ -24,7 +24,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import IProduct from '../Models/product'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { listProducts } from '../store/actions/product'
+import { listProducts, deleteProduct } from '../store/actions/product'
 import { AppState } from '../store/store'
 
 interface Props extends RouteComponentProps {}
@@ -44,6 +44,16 @@ const ProductsListScreen: React.FC<Props> = ({ history, match }) => {
     error: string | undefined
   } = useSelector((state: AppState) => state.productList)
 
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success
+  }: {
+    loading: boolean
+    success: boolean
+    error: string | undefined
+  } = useSelector((state: AppState) => state.productDelete)
+
   const { userInfo } = useSelector((state: AppState) => state.userLogin)
 
   useEffect(() => {
@@ -52,12 +62,15 @@ const ProductsListScreen: React.FC<Props> = ({ history, match }) => {
     } else {
       history.push('/login')
     }
-  }, [dispatch, history, userInfo])
+  }, [dispatch, history, userInfo, success])
 
   const createProductHandler = () => {}
 
   const deleteHandler = () => {
-    setShowModal(false)
+    if (productId) {
+      dispatch(deleteProduct(productId))
+      setShowModal(false)
+    }
   }
   const deleteModalHandler = (id: string) => {
     setProductId(id)
@@ -77,6 +90,10 @@ const ProductsListScreen: React.FC<Props> = ({ history, match }) => {
           </Button>
         </Col>
       </Row>
+      {loadingDelete && <Loader />}
+      {errorDelete && (
+        <Message title="Error" message={errorDelete} variant="danger" />
+      )}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -123,7 +140,9 @@ const ProductsListScreen: React.FC<Props> = ({ history, match }) => {
         <Modal.Header closeButton>
           <Modal.Title>Delete User</Modal.Title>
         </Modal.Header>
-        <Modal.Body>You Are About To Delete A User, Are You Sure?</Modal.Body>
+        <Modal.Body>
+          You Are About To Delete A Product, Are You Sure?
+        </Modal.Body>
         <Button block variant="secondary" onClick={modalCloseHandler}>
           Close
         </Button>

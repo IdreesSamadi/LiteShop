@@ -51,8 +51,10 @@ const UserListScreen: React.FC<Props> = ({ history }) => {
   }, [dispatch, history, userInfo, successDelete])
 
   const deleteHandler = () => {
-    if (userId) dispatch(deleteUser(userId))
-    setShowModal(false)
+    if (userId) {
+      dispatch(deleteUser(userId))
+      setShowModal(false)
+    }
   }
   const deleteModalHandler = (id: string) => {
     setUserId(id)

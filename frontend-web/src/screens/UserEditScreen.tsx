@@ -63,7 +63,6 @@ const UserEditScreen: React.FC<Props> = ({ match, history }) => {
   }, [dispatch, user, userId, successUpdate, history])
 
   const submitHandler = (e: FormEvent) => {
-    console.log(user)
     e.preventDefault()
     dispatch(
       updateUser({
