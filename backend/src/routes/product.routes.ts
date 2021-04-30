@@ -20,7 +20,8 @@ import {
   getProducts,
   deleteProduct,
   createProduct,
-  updateProduct
+  updateProduct,
+  createProductReview
 } from '../controllers/product.controller'
 import { isAdmin } from '../middleware/adminMiddleware'
 import { protect } from '../middleware/authMiddleware'
@@ -30,6 +31,7 @@ const router = express.Router()
 router.get('/:id', getProduct)
 router.delete('/:id', protect, isAdmin, deleteProduct)
 router.put('/:id', protect, isAdmin, updateProduct)
+router.post('/:id/reviews', protect, createProductReview)
 router.get('/', getProducts)
 router.post('/', protect, isAdmin, createProduct)
 

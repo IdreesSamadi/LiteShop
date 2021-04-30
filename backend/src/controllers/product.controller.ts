@@ -15,9 +15,12 @@
  */
 import { RequestHandler } from 'express'
 import asyncHandler from 'express-async-handler'
+import { ObjectId } from 'mongoose'
 
 import IProduct from '../interfaces/product.interface'
+import IReview from '../interfaces/review.interface'
 import Product from '../models/product.model'
+import Review from '../models/review.model'
 
 const getProducts: RequestHandler<{ id: string }> = asyncHandler(
   async (req, res, next) => {
@@ -94,4 +97,46 @@ const updateProduct: RequestHandler<{ id: string }> = asyncHandler(
   }
 )
 
-export { getProduct, getProducts, deleteProduct, updateProduct, createProduct }
+const createProductReview: RequestHandler<{ id: string }> = asyncHandler(
+  async (req, res, next) => {
+    const { rating, comment }: { rating: number; comment: string } = req.body
+
+    const product: IProduct | null = await Product.findById(req.params.id)
+    if (product) {
+      const alreadyReviewed = product.reviews.find(
+        (r) => r.user.toString() === (req as any).user._id.toString()
+      )
+      if (alreadyReviewed) {
+        res.status(400)
+        throw new Error('Product Already Reviewed')
+      }
+      const review = new Review({
+        name: (req as any).user.name,
+        rating: +rating,
+        comment,
+        user: (req as any).user._id
+      })
+
+      product.reviews.push(review)
+      product.numReviews = product.reviews.length
+      product.rating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        product.reviews.length
+
+      await product.save()
+      res.status(201).json({ message: 'Review Added' })
+    } else {
+      res.status(404)
+      throw new Error('Product Not Found')
+    }
+  }
+)
+
+export {
+  getProduct,
+  getProducts,
+  deleteProduct,
+  updateProduct,
+  createProduct,
+  createProductReview
+}

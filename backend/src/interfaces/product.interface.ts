@@ -14,7 +14,7 @@ interface IProduct extends Document {
   category: string
   price: number
   countInStock: number
-  reviews: ID[] | IReview[]
+  reviews: IReview[]
   rating: number
   numReviews: number
 }
