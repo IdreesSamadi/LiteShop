@@ -10,3 +10,28 @@ h1 {
   font-size: 2rem;
   padding: 0.5rem 0;
 }
+
+/* carousel */
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item.active {
+  max-height: 500px !important;
+}
+
+.carousel-caption h2 {
+  color: #fff;
+}
+
+.carousel img {
+  height: 400px !important;
+  width: 100%;
+  object-fit: cover;
+}
+.carousel a {
+  margin: 0 auto;
+}
+@media (max-width: 900px) {
+  .carousel-caption h2 {
+    font-size: 2.5vw;
+  }
+}
