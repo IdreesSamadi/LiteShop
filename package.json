@@ -1,0 +1,38 @@
+{
+  "name": "liteshop",
+  "version": "1.0.0",
+  "description": "e commerce website ",
+  "main": "backend/src/server.tsx",
+  "dependencies": {
+    "eslint": "^7.25.0",
+    "react-bootstrap": "^1.5.2",
+    "react-bootstrap-icons": "^1.4.0"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.2"
+  },
+  "scripts": {
+    "start": "ts-node-dev --respawn backend/src/server.ts",
+    "server": "nodemon --exec ts-node backend/src/server.ts",
+    "client": "npm start --prefix frontend-web",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "data:import": "ts-node backend/src/data/seeder.ts",
+    "data:destroy": "ts-node backend/src/data/seeder.ts -d",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend-web && npm install --prefix backend && npm run build --prefix frontend-web"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IdreesSamadi/LiteShop.git"
+  },
+  "keywords": [
+    "ecommerce",
+    "liteshop"
+  ],
+  "author": "Idrees Samadi",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/IdreesSamadi/LiteShop/issues"
+  },
+  "homepage": "https://github.com/IdreesSamadi/LiteShop#readme"
+}

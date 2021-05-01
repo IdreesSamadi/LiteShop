@@ -50,24 +50,8 @@ app.use((req, res, next) => {
 })
 
 /** Parse the body of the request */
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
-
-/** Rules of API */
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  )
-
-  if (req.method == 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET')
-    return res.status(200).json({})
-  }
-
-  next()
-})
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 app.use('/api/products', productRouter)
 app.use('/api/users', userRouter)
@@ -78,6 +62,36 @@ app.use('/api/upload', uploadRouter)
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
+
+if (config.environment === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend-web/build')))
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend-web', 'build', 'index.html'))
+  )
+} else {
+  /** Rules of API */
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    )
+
+    if (req.method == 'OPTIONS') {
+      res.header(
+        'Access-Control-Allow-Methods',
+        'PUT, POST, PATCH, DELETE, GET'
+      )
+      return res.status(200).json({})
+    }
+
+    next()
+  })
+
+  app.get('/', (req, res) => {
+    res.send('API is running....')
+  })
+}
 
 app.use(notFound)
 app.use(errorHandler)
