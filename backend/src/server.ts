@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import bodyParser from 'body-parser'
 import express, { ErrorRequestHandler } from 'express'
 import path from 'path'
 
@@ -33,21 +32,23 @@ const NAMESPACE = 'Server'
 connectDB()
 const app = express()
 
-/** Log the request */
-app.use((req, res, next) => {
-  logger.info(
-    NAMESPACE,
-    `[REQUEST] METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
-  )
-
-  res.on('finish', () => {
+if (config.environment !== 'production') {
+  /** Log the request */
+  app.use((req, res, next) => {
     logger.info(
       NAMESPACE,
-      `[RESPONSE] METHOD: [${req.method}] - URL: [${req.url}] - STATUS: [${res.statusCode}] - IP: [${req.socket.remoteAddress}]`
+      `[REQUEST] METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
     )
+
+    res.on('finish', () => {
+      logger.info(
+        NAMESPACE,
+        `[RESPONSE] METHOD: [${req.method}] - URL: [${req.url}] - STATUS: [${res.statusCode}] - IP: [${req.socket.remoteAddress}]`
+      )
+    })
+    next()
   })
-  next()
-})
+}
 
 /** Parse the body of the request */
 app.use(express.urlencoded({ extended: true }))

@@ -30,15 +30,17 @@
     "concurrently": "^6.0.2"
   },
   "scripts": {
+    "build": "cd frontend-web && npm run build",
+    "install-client": "cd frontend-web && npm install",
     "server": "nodemon --exec ts-node backend/src/server.ts",
     "client": "npm start --prefix frontend-web",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "data:import": "ts-node backend/src/data/seeder.ts",
     "data:destroy": "ts-node backend/src/data/seeder.ts -d",
-    "start": "node backend/src/server.ts",
+    "start": "nodemon backend/src/server.ts",
     "postinstall": "tsc",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false tsc npm install --prefix frontend-web && npm install --prefix backend && npm run build --prefix frontend-web"
+    "heroku-postbuild": "npm run install-client && npm run build"
   },
   "repository": {
     "type": "git",
