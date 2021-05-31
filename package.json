@@ -38,9 +38,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "data:import": "ts-node backend/src/data/seeder.ts",
     "data:destroy": "ts-node backend/src/data/seeder.ts -d",
-    "start": "nodemon backend/src/server.ts",
+    "start": "node backend/build/server.js",
     "postinstall": "tsc",
-    "heroku-postbuild": "npm run install-client && npm run build"
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "deploy": "git add . && git commit -m Heroku && git push heroku master"
   },
   "repository": {
     "type": "git",
