@@ -20,7 +20,9 @@ dotenv.config()
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost'
 const SERVER_PORT = process.env.SERVER_PORT || 1337
 const NODE_ENV = process.env.NODE_ENV || 'development'
-const MONGO_URI = process.env.MONGO_URI || ''
+const MONGO_URI =
+  process.env.MONGO_URI ||
+  'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false'
 
 const SERVER = {
   hostname: SERVER_HOSTNAME,
