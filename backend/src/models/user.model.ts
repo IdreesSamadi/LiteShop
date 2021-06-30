@@ -4,7 +4,7 @@ import mongoose, { Schema, Document } from 'mongoose'
 import IUser from '../interfaces/user.interface'
 
 export interface IUserModel extends IUser, Document {
-  matchPassword(password: string): Promise<boolean>
+  matchPassword?(password: string): Promise<boolean>
 }
 
 const userSchema = new Schema<IUserModel>(

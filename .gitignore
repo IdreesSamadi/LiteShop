@@ -8,6 +8,8 @@ node_modules/
 /.pnp
 .pnp.js
 /uploads/*.jpg
+backend/build
+/frontend-web/build
 
 # testing
 /coverage
