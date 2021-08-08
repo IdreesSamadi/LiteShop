@@ -65,11 +65,11 @@ git clone git@github.com:IdreesSamadi/LiteShop.git
 cd liteShop
 
 # Setup backend
-cd server && npm install
+cd backend && npm install
 npm run dev
 
 # Setup frontend
-cd client && npm install
+cd frontend-web && npm install
 npm start
 ```
 
